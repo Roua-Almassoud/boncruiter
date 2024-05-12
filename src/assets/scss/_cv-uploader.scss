@@ -1,0 +1,167 @@
+.dashboard-outer {
+  padding: 0px 30px 0;
+  .upper-title-box {
+    margin-bottom: 40px;
+    h3 {
+      font-weight: 500;
+      font-size: 30px !important;
+      line-height: 41px;
+      color: #202124;
+      margin-bottom: 10px;
+    }
+    .text {
+      font-size: 15px;
+      color: dimgray;
+      line-height: 24px;
+      font-weight: 400;
+      margin: 0;
+    }
+  }
+  .ls-widget {
+    position: relative;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 6px 15px rgba(64, 79, 104, 0.05);
+    margin-bottom: 30px;
+    .widget-title {
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      background: transparent;
+      padding: 20px 30px 30px;
+      min-height: 60px;
+      h4 {
+        position: relative;
+        font-size: 18px;
+        line-height: 30px;
+        color: #1b2032;
+        font-weight: 500;
+        margin-right: 30px;
+        padding: 7px 0;
+      }
+    }
+    .widget-content {
+      position: relative;
+      padding: 0 30px 10px;
+      .uploading-resume {
+        position: relative;
+        display: flex;
+        align-items: center;
+        .uploadButton {
+          justify-content: center;
+          -webkit-box-align: center;
+          flex-direction: column;
+          width: 100%;
+        }
+        .uploadButton-input {
+          opacity: 0;
+          position: absolute;
+          overflow: hidden;
+          z-index: -1;
+          pointer-events: none;
+          height: 0;
+          width: 0;
+          display: none;
+        }
+        .cv-uploadButton {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-direction: column;
+          cursor: pointer;
+          text-align: center;
+          height: 300px;
+          width: 100%;
+          border-radius: 5px;
+          transition: 0.3s;
+          margin: 0;
+          color: #1b2032;
+          font-size: 16px;
+          border: 2px dashed #ced4e1;
+          padding: 30px 20px;
+          .title {
+            display: block;
+            font-weight: 500;
+            font-size: 18px;
+            line-height: 24px;
+            color: var(--primaryColor);
+            margin-bottom: 12px;
+          }
+          .text {
+            font-size: 14px;
+            line-height: 19px;
+            color: dimgray;
+            margin-bottom: 28px;
+          }
+        }
+        .uploadButton-file-name {
+          align-items: center;
+          padding: 0 10px 0 18px;
+          min-height: 36px;
+          top: 1px;
+          position: relative;
+          color: #1b2032;
+          background-color: transparent;
+          overflow: hidden;
+          line-height: 22px;
+        }
+      }
+    }
+  }
+  .cv-manager-widget .files-outer {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    .file-edit-box {
+      position: relative;
+      height: 167px;
+      width: 190px;
+      //background: #f5f7fc;
+      //background: linear-gradient(97.41deg, #FEF0EC -0.75%, #EEF4F3 45.79%, #F5F2F0 96.95%);
+      background: #fef0ec80;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      margin-bottom: 20px;
+      margin-right: 20px;
+      .title {
+        display: block;
+        margin-bottom: 15px;
+        font-size: 15px;
+        line-height: 20px;
+        text-align: center;
+        color: dimgray;
+      }
+      .edit-btns {
+        position: relative;
+        display: flex;
+        margin-left: 20px;
+        button {
+          position: relative;
+          width: 30px;
+          height: 30px;
+          line-height: 30px;
+          text-align: center;
+          background: #fff;
+          border-radius: 8px;
+          margin-right: 10px;
+          min-width: auto;
+          color: dimgray;
+          border-color: dimgray;
+          border-style: double;
+          svg {
+            margin-bottom: 10px;
+          }
+        }
+        & button:hover{
+          color: var(--primaryColor);;
+          border-color: var(--primaryColor);
+        }
+      }
+    }
+  }
+}

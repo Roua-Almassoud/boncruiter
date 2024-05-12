@@ -1,0 +1,71 @@
+//
+// footer.scss
+//
+
+/*********************************/
+/*         Footer                */
+/*===============================*/
+footer {
+    z-index: 1;
+    position: relative;
+    background-color: var(--primaryColor);
+    //background-color: #141316;
+    background-image: url(../images/footer.jpg);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding-top: 100px;
+    padding-bottom: 100px;
+    //color: $gray-500;
+    &:before{
+        inset: 0;
+        content: "";
+        z-index: -1;
+        opacity: .95;
+        position: absolute;
+        background-color: var(--primaryColor);
+        //background-color: #141316;
+    }
+    .footer-head {
+        letter-spacing: 1px;         
+        font-weight: 500;
+        color: $light;
+    }
+    
+    .text-foot {
+        color: white;
+    }
+
+    .footer-list {
+        margin-bottom: 0;
+        li {
+            margin-bottom: 10px;
+            a {
+                transition: all 0.5s ease;
+                &:hover {
+                    color: lighten($gray-500, 20%);
+                }
+            }   
+            &:last-child{
+                margin-bottom: 0;
+            }         
+        }
+    }
+
+    .footer-bar {
+        border-top: 1px solid lighten($footer, 3%);
+    }
+
+    .social-icon.foot-social-icon li a {
+        border: 2px solid white;
+        color: #adb5bd;
+        border-color: white;
+        font-weight: bold;
+    }
+    .social-icon.foot-social-icon li a .fea.icon-sm{
+        stroke: white;
+    }
+    .text-sm-start{
+        color: white;
+    }
+}

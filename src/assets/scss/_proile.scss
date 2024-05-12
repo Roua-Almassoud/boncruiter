@@ -1,0 +1,31 @@
+.sections-tab{
+    background-color: white;
+    border-radius: 15px;
+    padding: 0;
+    .nav {
+        .nav-item{
+            padding: 10px;
+            cursor: pointer;
+        }
+        .nav-item.active{
+            background: linear-gradient(97.41deg, #FEF0EC -0.75%, #EEF4F3 45.79%, #F5F2F0 96.95%);
+            .nav-link{
+                //color: rgba(60, 55, 91, 1);
+                color: var(--primaryColor);
+            }
+        }
+        .nav-link{
+            color: rgba(60, 55, 91, 0.5);
+            &:hover{
+                color: var(--primaryColor)
+            }
+        }
+    }
+}
+
+.form-column{
+    padding: 0 8vw;
+    h3{
+        padding: 20px 0;
+    }
+}
