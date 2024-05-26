@@ -7,7 +7,7 @@ import Api from '../api/Api';
 import Navbar from '../components/navbar';
 import Footer from '../components/footer';
 import ScrollTop from '../components/scrollTop';
-import Loader from '../components/loader';
+import Loader from '../components/common/loader';
 import Utils from '../components/utils/utils';
 
 export default function UploadCV() {
@@ -19,7 +19,6 @@ export default function UploadCV() {
   const handleChange = (event) => {
     const reader = new FileReader();
     let selectedfile = event.target.files[0];
-    console.log('selectedFile: ', selectedfile);
     setFile(selectedfile);
   };
 
@@ -28,21 +27,31 @@ export default function UploadCV() {
       setLoading(true);
       let formData = new FormData();
       formData.append('file', file);
-      const response = await Api.call(formData, `/files/upload_cv`, 'post', '', true);
-      
-      const cvData = response.data
-      console.log('cvData: ', cvData, 'cvData.code === 200: ', cvData.code === 200);
+      const response = await Api.call(
+        formData,
+        `/files/upload_cv`,
+        'post',
+        '',
+        true
+      );
+
+      const cvData = response.data;
+      setLoading(false);
       if (cvData.code === '200') {
-        console.log('inn response')
-        //setLoading(false);
-        navigate('/profile');
+        navigate('/profile', {
+          state: {
+            data:cvData.data
+          }
+        });
       } else {
-        console.log('in error');
         setLoading(false);
-        setAlertError('Something went wrong, please try again!');
+        setAlertError(
+          cvData.message || 'Something went wrong, please try again!'
+        );
       }
     } else {
       setFile(null);
+      setAlertError('');
     }
   };
   return (
@@ -135,12 +144,12 @@ export default function UploadCV() {
             </div>
           </div>
           {alertError && (
-          <div class="alert alert-danger" role="alert">
-            {alertError}
-          </div>
-        )}
+            <div class="alert alert-danger" role="alert">
+              {alertError}
+            </div>
+          )}
         </section>
-        
+
         <Footer />
         <ScrollTop />
       </>

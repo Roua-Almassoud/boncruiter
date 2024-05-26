@@ -182,7 +182,7 @@ export default function Navbar({ navClass, navLight }) {
                       onClick={() => {
                         localStorage.removeItem('userId')
                         console.logg('afterr clear')
-                        navigate('/')}}>
+                        navigate('/index')}}>
                         <FiLogOut className="fea icon-sm me-2 align-middle" />
                         Logout
                       </Link>

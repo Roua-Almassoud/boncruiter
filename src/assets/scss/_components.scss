@@ -4,8 +4,19 @@
 /*********************************/
 /*         component-wrapper     */
 /*===============================*/
+.nav-button-border {
+  color: var(--primaryColor) !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
 
-.nav-button {
+.nav-button-border::before {
+  background: transparent !important;
+  border: 1px solid var(--primaryColor) !important;
+}
+
+.nav-button,
+.nav-button-border {
   border: 0;
   z-index: 1;
   margin: 3px;
@@ -22,7 +33,8 @@
   line-height: 10px;
   font-weight: 600;
 }
-.nav-button::before {
+.nav-button::before,
+.nav-button-border::before {
   inset: 0;
   z-index: -1;
   content: '';
@@ -1014,11 +1026,10 @@ button:not(:disabled) {
     &:focus {
       border-color: #fc5b11;
     }
-    
   }
 
-  .react-tel-input .form-control{
-    border:none;
+  .react-tel-input .form-control {
+    border: none;
   }
 
   .invalid-feedback {
@@ -1026,7 +1037,7 @@ button:not(:disabled) {
   }
 }
 
-.alert-danger{
+.alert-danger {
   max-width: 500px !important;
   margin: auto;
   padding: 20px;

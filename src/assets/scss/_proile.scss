@@ -29,3 +29,15 @@
         padding: 20px 0;
     }
 }
+
+.react-tel-input .form-control{
+    border:none !important;
+  }
+.invalid-feedback {
+    display: block !important;
+    color: #ea868f;
+    display: none;
+    font-size: .875em;
+    margin-top: .25rem;
+    width: 100%;
+}

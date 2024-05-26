@@ -5,7 +5,7 @@ import Api from '../api/Api';
 import Navbar from '../components/navbar';
 import Footer from '../components/footer';
 import ScrollTop from '../components/scrollTop';
-import Loader from '../components/loader';
+import Loader from '../components/common/loader';
 import Utils from '../components/utils/utils';
 
 export default function VerifyAccount() {

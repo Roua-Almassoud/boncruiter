@@ -1,27 +1,45 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Api from '../api/Api';
 
 import Navbar from '../components/navbar';
 import Footer from '../components/footer';
 import ScrollTop from '../components/scrollTop';
-import Loader from '../components/loader';
+import Loader from '../components/common/loader';
 import Utils from '../components/utils/utils';
-import Signup from './signup';
+import Section from '../components/common/section';
+import Nav from 'react-bootstrap/Nav';
 
 export default function Profile() {
   const navigate = useNavigate();
-  const [user, setUser] = useState({
-    email: '',
-    password: '',
-    firstName: '',
-    lastName: '',
-    phone: '',
-    image: '',
-  });
+  const { state } = useLocation();
+  let cvData = !Utils.isEmpty(state)
+    ? state.data
+    : {
+        basicInfo: {},
+        skills: [],
+        languages: [],
+        education: [],
+        certificates: [],
+        projects: [],
+        experiences: [],
+      };
+  const [userSections, setUserSections] = useState(cvData);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
-  const [selectedSection, setSelectedSection] = useState(0)
+  const [selectedSection, setSelectedSection] = useState('basicInfo');
+
+  const getFullProfile = async () => {
+    setLoading(true);
+    const response = await Api.call({}, `/user/full`, 'get', '');
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    if (Utils.isEmpty(state)) {
+      getFullProfile();
+    }
+  }, []);
   const validate = (field = '', value = '') => {
     let errorsList = errors;
     if (field) {
@@ -80,11 +98,41 @@ export default function Profile() {
   };
 
   const changeSection = (section) => {
-    setSelectedSection(section)
-  }
+    setSelectedSection(section);
+  };
 
-  const tabName = selectedSection === 0?
-  'Basic Information': selectedSection === 1?'Skills':selectedSection === 2? 'Experiences':'Languages'
+  const next = () => {
+   
+  };
+  const tabName =
+    selectedSection === 0
+      ? 'Basic Information'
+      : selectedSection === 1
+      ? 'Skills'
+      : selectedSection === 2
+      ? 'Experiences'
+      : 'Languages';
+
+  const renderSections = () => {
+    let sections = [];
+    if (userSections) {
+      Object.keys(userSections).forEach(function (key, index) {
+        sections.push(
+          <li
+            class={`nav-item ${selectedSection === key ? 'active' : ''}`}
+            onClick={() => changeSection(key)}
+          >
+            <a class="nav-link">
+              {key === 'basicInfo'
+                ? 'Basic Information'
+                : Utils.capitalizeFirstLetter(key)}
+            </a>
+          </li>
+        );
+      });
+    }
+    return sections;
+  };
 
   return (
     <>
@@ -94,132 +142,21 @@ export default function Profile() {
         <section className="bg-half-170 d-table w-100 bg-container">
           <div className="row g-4 align-items-top justify-content-left">
             <div className="col-3 sections-tab">
-              <ul class="nav flex-column">
-                <li class={`nav-item ${selectedSection === 0? 'active': ''}`}
-                onClick={() => changeSection(0)}>
-                  <a class="nav-link">
-                    Basic Information
-                  </a>
-                </li>
-                <li class={`nav-item ${selectedSection === 1? 'active': ''}`}
-                onClick={() => changeSection(1)}>
-                  <a class="nav-link">
-                    Skills
-                  </a>
-                </li>
-                <li class={`nav-item ${selectedSection === 2? 'active': ''}`}
-                onClick={() => changeSection(2)}>
-                  <a class="nav-link">
-                  Experiences
-                  </a>
-                </li>
-                <li class={`nav-item ${selectedSection === 3? 'active': ''}`}
-                onClick={() => changeSection(3)}>
-                  <a class="nav-link">
-                    Languages
-                  </a>
-                </li>
-              </ul>
+              <ul class="nav flex-column">{renderSections()}</ul>
             </div>
             <div className="col-8 form-column">
-              <h3>{tabName}</h3>
-            <form onSubmit={(event) => event.preventDefault()}>
-                  <div className="mb-3">
-                    <label for="firstName" className="form-label">
-                      First Name
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="firstName"
-                      value={user?.firstName}
-                      onChange={(event) =>
-                        handleChange(event.target.value, 'firstName')
-                      }
-                    />
-                    <div className={errors.firstName ? 'invalid-feedback' : ''}>
-                      {errors.firstName}
-                    </div>
-                  </div>
-                  <div className="mb-3">
-                    <label for="lastName" className="form-label">
-                      Last Name
-                    </label>
-                    <input
-                      type="text"
-                      value={user?.lastName}
-                      onChange={(event) =>
-                        handleChange(event.target.value, 'lastName')
-                      }
-                      className="form-control"
-                      id="lastName"
-                      aria-describedby="lastName"
-                    />
-                    <div className={errors.lastName ? 'invalid-feedback' : ''}>
-                      {errors.lastName}
-                    </div>
-                  </div>
-                  <div className="mb-3">
-                    <label for="email" className="form-label">
-                      Email address
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="email"
-                      value={user?.email}
-                      onChange={(event) =>
-                        handleChange(event.target.value, 'email')
-                      }
-                      aria-describedby="email"
-                    />
-                    <div className={errors.email ? 'invalid-feedback' : ''}>
-                      {errors.email}
-                    </div>
-                  </div>
-                  <div className="mb-3">
-                    <label for="password" className="form-label">
-                      Password
-                    </label>
-                    <input
-                      type="password"
-                      className="form-control"
-                      id="password"
-                      value={user?.password}
-                      onChange={(event) =>
-                        handleChange(event.target.value, 'password')
-                      }
-                    />
-                    <div className={errors.password ? 'invalid-feedback' : ''}>
-                      {errors.password}
-                    </div>
-                  </div>
-                  <div className="mb-3">
-                    <label for="phoneNumber" className="form-label">
-                      Phone Number
-                    </label>
-                    <input
-                      type="number"
-                      className="form-control"
-                      id="phoneNumber"
-                      value={user?.phone}
-                      onChange={(event) =>
-                        handleChange(event.target.value, 'phone')
-                      }
-                    />
-                    <div className={errors.phone ? 'invalid-feedback' : ''}>
-                      {errors.phone}
-                    </div>
-                  </div>
-
-                  <button
-                    //type="submit"
-                    className="nav-button"
-                    onClick={handleSubmit}
-                  >
-                    Save
-                  </button>
-                </form>
+              <h3>
+                {selectedSection === 'basicInfo'
+                  ? 'Basic Information'
+                  : Utils.capitalizeFirstLetter(selectedSection)}
+              </h3>
+              <Section
+                section={selectedSection}
+                sectionData={userSections[selectedSection]}
+                loading={setLoading}
+                changeSection={changeSection}
+                next={next}
+              />
             </div>
           </div>
         </section>

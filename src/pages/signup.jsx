@@ -6,7 +6,7 @@ import "react-phone-input-2/lib/style.css";
 import Navbar from '../components/navbar';
 import Footer from '../components/footer';
 import ScrollTop from '../components/scrollTop';
-import Loader from '../components/loader';
+import Loader from '../components/common/loader';
 import Utils from '../components/utils/utils';
 
 export default function Signup() {
@@ -75,7 +75,6 @@ export default function Signup() {
     }
   };
   const handleChange = (value, field) => {
-    console.log('value: ', value)
     validate(field, value);
     setUser({ ...user, [field]: value });
   };

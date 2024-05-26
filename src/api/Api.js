@@ -7,7 +7,6 @@ export default class Api {
   static call = async (requestBody, path, method, header, upload = false) => {
     let url = path ? `${this.ApiURL}${path}` : this.ApiURL;
 
-    console.log('requestBody: ', requestBody);
     let headers = {
       'Content-Type': upload ? 'multipart/form-data' : 'application/json',
       auth: header
@@ -20,7 +19,6 @@ export default class Api {
       headers.apikey = this.ApiKey;
       headers['Access-Control-Allow-Origin']='*'
     }
-    console.log('headrs: ', headers);
     try {
       const response = await axios[method](
         url,
@@ -41,7 +39,6 @@ export default class Api {
         }
         // , {crossDomain: true}
       );
-      console.log('response from Api: ', response)
       return response;
     } catch (e) {
       console.log('e: ', e)
