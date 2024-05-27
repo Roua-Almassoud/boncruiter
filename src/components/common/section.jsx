@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import FormComponent from './formComponent';
@@ -7,35 +7,56 @@ import Loader from './loader';
 import Utils from '../utils/utils';
 
 export default function Section(props) {
-  const { section, sectionData, loading, changeSection, next } = props;
-
-  const saveSection = async (data) => {
+  const { section, sectionData, loading, next, availableSkills } = props;
+  const [alertError, setAlertError] = useState('');
+  const saveSection = async (data, selectedList) => {
     loading(true);
+    let listData = [];
+    if (section === 'skills') {
+      selectedList.map((item) => {
+        listData.push({ skillId: item.id });
+      });
+    }
+
+    let requestBody =
+      section === 'skills'
+        ? {
+            skills: listData,
+          }
+        : data;
     const response = await Api.call(
-      data,
-      `/user/${section === 'basicInfo' ? 'basic-info' : section}`,
-      'post',
+      requestBody,
+      `/user/${
+        section === 'basicInfo'
+          ? 'basic-info'
+          : section === 'skills'
+          ? 'skill/bulk'
+          : section
+      }`,
+      `${section === 'skills' ? 'put' : 'post'}`,
       ''
     );
-    if (response.data) {
+    if (response.data.code === '200') {
       loading(false);
+      setAlertError('');
+      next();
     } else {
       loading(false);
+      setAlertError(
+        response.data.message || 'Something went wrong, please try again!'
+      );
     }
   };
 
   const renderSection = () => {
     let fields = [];
-    let form = {};
+    let form;
     switch (section) {
       case 'basicInfo':
         form = {
-          brief: sectionData.brief,
-          github: sectionData.github,
-          portfolioUrl: sectionData.portfolioUrl,
-          birthDate: sectionData.birthDate,
-          noticePeriod: sectionData.noticePeriod,
-          desiredSalary: sectionData.desiredSalary,
+          ...sectionData,
+          noticePeriod: sectionData?.noticePeriod,
+          desiredSalary: sectionData?.desiredSalary,
         };
         fields = [
           {
@@ -78,10 +99,11 @@ export default function Section(props) {
           },
 
           {
-            name: 'githubMainPageUrl',
+            name: 'github',
             type: 'text',
             optional: false,
             label: 'Github Main Page Url',
+            regex: 'uri',
           },
 
           {
@@ -89,6 +111,7 @@ export default function Section(props) {
             type: 'text',
             optional: false,
             label: 'Linkedin Url',
+            regex: 'uri',
           },
           {
             name: 'location',
@@ -97,10 +120,11 @@ export default function Section(props) {
             label: 'Location',
           },
           {
-            name: 'portfolioWebsiteUrl',
+            name: 'portfolioUrl',
             type: 'text',
             optional: false,
             label: 'Portfolio Website Url',
+            regex: 'uri',
           },
           {
             name: 'noticePeriod',
@@ -117,26 +141,47 @@ export default function Section(props) {
         ];
 
         break;
-      case 'certificates':
-        break;
-      case 'education':
-        break;
-      case 'experiences':
+      case 'skills':
+        form = [...sectionData];
+        fields = [
+          {
+            name: 'skills',
+            type: 'multiSelect',
+            optional: false,
+            label: 'Skills',
+            options: availableSkills,
+          },
+        ];
+        if (alertError) {
+          setAlertError('');
+        }
         break;
       case 'languages':
         break;
+      case 'education':
+        break;
+      case 'certificates':
+        break;
       case 'projects':
         break;
-      case 'skills':
+      case 'experiences':
         break;
     }
     return (
-      <FormComponent
-        fields={fields}
-        formData={sectionData}
-        saveSection={saveSection}
-        next={next}
-      />
+      <>
+        <FormComponent
+          fields={fields}
+          formData={form}
+          saveSection={saveSection}
+          next={next}
+          userList={section === 'skills' ? sectionData : null}
+        />
+        {alertError && (
+          <div class="alert alert-danger profile-alert" role="alert">
+            {alertError}
+          </div>
+        )}
+      </>
     );
   };
 

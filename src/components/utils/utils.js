@@ -7,13 +7,6 @@ class Utils {
     );
   }
   static isEmptyObject(obj) {
-    console.log(
-      'Object.keys(obj).length === 0: ',
-      Object.keys(obj).length === 0,
-      obj,
-      Object.keys(obj).length,
-      Object.keys(obj)
-    );
     return Object.keys(obj).length === 0;
   }
 
@@ -28,6 +21,9 @@ class Utils {
         regex =
           /[1-9][0-9][0-9]{2}-([0][1-9]|[1][0-2])-([1-2][0-9]|[0][1-9]|[3][0-1])/gm;
         break;
+      case 'uri':
+        regex =
+          /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g;
     }
     return regex.test(value);
   }

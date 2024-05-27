@@ -13,6 +13,15 @@ import Nav from 'react-bootstrap/Nav';
 export default function Profile() {
   const navigate = useNavigate();
   const { state } = useLocation();
+  const sectionsList = [
+    'basicInfo',
+    'skills',
+    'languages',
+    'education',
+    'certificates',
+    'projects',
+    'experiences',
+  ];
   let cvData = !Utils.isEmpty(state)
     ? state.data
     : {
@@ -24,15 +33,44 @@ export default function Profile() {
         projects: [],
         experiences: [],
       };
+
   const [userSections, setUserSections] = useState(cvData);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
   const [selectedSection, setSelectedSection] = useState('basicInfo');
-
+  const [skills, setSkills] = useState([]);
   const getFullProfile = async () => {
     setLoading(true);
     const response = await Api.call({}, `/user/full`, 'get', '');
-    setLoading(false);
+    if (response.data) {
+      let fullData = response.data.data;
+      setUserSections(fullData);
+      setLoading(false);
+    } else {
+      setLoading(false);
+    }
+  };
+
+  const getAvailableSkills = async () => {
+    setLoading(true);
+    const response = await Api.call({}, `/user/available-skills`, 'get', '');
+    if (response.data) {
+      let availableSkills = response.data.data.list.map((skill) => {
+        return { id: skill.id, name: skill.name };
+      });
+      if (userSections['skills']) {
+        userSections['skills'].map((userSkill) => {
+          availableSkills.push({
+            id: userSkill.skillId,
+            name: userSkill.skillName,
+          });
+        });
+      }
+      setSkills(availableSkills);
+      setLoading(false);
+    } else {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -99,19 +137,21 @@ export default function Profile() {
 
   const changeSection = (section) => {
     setSelectedSection(section);
+    const selectedIndex = sectionsList.indexOf(selectedSection);
+    const nextSectionKey = sectionsList[selectedIndex + 1];
+    if (nextSectionKey === 'skills') {
+      getAvailableSkills();
+    }
   };
 
   const next = () => {
-   
+    const selectedIndex = sectionsList.indexOf(selectedSection);
+    const nextSectionKey = sectionsList[selectedIndex + 1];
+    setSelectedSection(nextSectionKey);
+    if (nextSectionKey === 'skills') {
+      getAvailableSkills();
+    }
   };
-  const tabName =
-    selectedSection === 0
-      ? 'Basic Information'
-      : selectedSection === 1
-      ? 'Skills'
-      : selectedSection === 2
-      ? 'Experiences'
-      : 'Languages';
 
   const renderSections = () => {
     let sections = [];
@@ -134,6 +174,19 @@ export default function Profile() {
     return sections;
   };
 
+  const userSkills = () => {
+    let formattedUserSkills = [];
+    if (userSections['skills']) {
+      userSections['skills'].map((userSkill) => {
+        formattedUserSkills.push({
+          id: userSkill.skillId,
+          name: userSkill.skillName,
+        });
+      });
+    }
+    return formattedUserSkills;
+  };
+
   return (
     <>
       {loading && <Loader />}
@@ -152,10 +205,14 @@ export default function Profile() {
               </h3>
               <Section
                 section={selectedSection}
-                sectionData={userSections[selectedSection]}
+                sectionData={
+                  selectedSection === 'skills'
+                    ? userSkills()
+                    : userSections[selectedSection]
+                }
                 loading={setLoading}
-                changeSection={changeSection}
                 next={next}
+                availableSkills={skills}
               />
             </div>
           </div>

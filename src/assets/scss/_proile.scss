@@ -1,43 +1,70 @@
-.sections-tab{
-    background-color: white;
-    border-radius: 15px;
-    padding: 0;
-    .nav {
-        .nav-item{
-            padding: 10px;
-            cursor: pointer;
-        }
-        .nav-item.active{
-            background: linear-gradient(97.41deg, #FEF0EC -0.75%, #EEF4F3 45.79%, #F5F2F0 96.95%);
-            .nav-link{
-                //color: rgba(60, 55, 91, 1);
-                color: var(--primaryColor);
-            }
-        }
-        .nav-link{
-            color: rgba(60, 55, 91, 0.5);
-            &:hover{
-                color: var(--primaryColor)
-            }
-        }
+.sections-tab {
+  background-color: white;
+  border-radius: 15px;
+  padding: 0;
+  .nav {
+    .nav-item {
+      padding: 10px;
+      cursor: pointer;
     }
-}
-
-.form-column{
-    padding: 0 8vw;
-    h3{
-        padding: 20px 0;
+    .nav-item.active {
+      background: linear-gradient(
+        97.41deg,
+        #fef0ec -0.75%,
+        #eef4f3 45.79%,
+        #f5f2f0 96.95%
+      );
+      .nav-link {
+        //color: rgba(60, 55, 91, 1);
+        color: var(--primaryColor);
+      }
     }
-}
-
-.react-tel-input .form-control{
-    border:none !important;
+    .nav-link {
+      color: rgba(60, 55, 91, 0.5);
+      &:hover {
+        color: var(--primaryColor);
+      }
+    }
   }
+}
+
+.form-column {
+  padding: 0 8vw;
+  h3 {
+    padding: 20px 0;
+  }
+}
+
+.react-tel-input .form-control {
+  border: none !important;
+}
 .invalid-feedback {
-    display: block !important;
-    color: #ea868f;
-    display: none;
-    font-size: .875em;
-    margin-top: .25rem;
-    width: 100%;
+  display: block !important;
+  color: #ea868f;
+  display: none;
+  font-size: 0.875em;
+  margin-top: 0.25rem;
+  width: 100%;
+}
+
+.highlightOption {
+  background-color: var(--primaryColor) !important;
+  color: rgba(60, 55, 91, 0.5);
+}
+.multiSelectContainer li {
+  margin-left: 0;
+}
+
+.multiSelectContainer li:hover {
+  background-color: var(--primaryColor) !important;
+}
+
+.multiSelectContainer .chip {
+  background-color: var(--primaryColor) !important;
+}
+
+.alert-danger.profile-alert{
+    width: auto;
+    max-width: none !important;
+    margin-top: 20px;
 }

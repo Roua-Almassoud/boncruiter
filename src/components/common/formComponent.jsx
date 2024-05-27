@@ -7,13 +7,14 @@ import Row from 'react-bootstrap/Row';
 import _ from 'lodash';
 import Utils from '../utils/utils';
 import PhoneInput from 'react-phone-input-2';
+import Multiselect from 'multiselect-react-dropdown';
 
-function FormComponent({ fields, formData, saveSection, next }) {
+function FormComponent({ fields, formData, saveSection, next, userList }) {
   const [validated, setValidated] = useState(false);
   const [form, setForm] = useState(formData);
-
   const [errors, setErrors] = useState({});
   const [errorMessage, setErrorMessage] = useState('');
+  const [selectedItems, setSelectedItems] = useState([]);
 
   const handleSubmit = (event) => {
     const form = event.currentTarget;
@@ -52,7 +53,7 @@ function FormComponent({ fields, formData, saveSection, next }) {
     const isErrorsEmpty = _.isEmpty(errorsObject);
     if (isErrorsEmpty && _.isNull(field)) {
       setValidated(true);
-      saveSection(form);
+      saveSection(form, selectedItems);
     }
 
     setErrors(errorsObject);
@@ -63,9 +64,18 @@ function FormComponent({ fields, formData, saveSection, next }) {
   };
 
   const updateForm = (e, field, value, type = 'text') => {
-    form[field] = type === 'number' ? parseFloat(value) : value;
+    //form[field] = type === 'number' ? parseFloat(value) : value;
+    form[field] = value;
     validate(e, field);
     setForm({ ...form });
+  };
+
+  const onSelect = (selectedList, selectedItem) => {
+    setSelectedItems(selectedList);
+  };
+
+  const onRemove = (selectedList, removedItem) => {
+    setSelectedItems(selectedList);
   };
 
   const renderInputs = (field) => {
@@ -101,6 +111,20 @@ function FormComponent({ fields, formData, saveSection, next }) {
             </div>
           );
           break;
+
+        case 'multiSelect':
+          fieldInput = (
+            <div>
+              <Multiselect
+                options={field.options}
+                selectedValues={userList}
+                onSelect={onSelect}
+                onRemove={onRemove}
+                displayValue="name"
+              />
+            </div>
+          );
+          break;
       }
 
       let returnedFieldWrapper = (
@@ -130,7 +154,16 @@ function FormComponent({ fields, formData, saveSection, next }) {
       <button className={'nav-button'} onClick={(e) => validate(e)}>
         Save
       </button>
-      
+      <button
+        className={'nav-button-border'}
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          next();
+        }}
+      >
+        Next
+      </button>
     </Form>
   );
 }
