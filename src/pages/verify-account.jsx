@@ -65,7 +65,7 @@ export default function VerifyAccount() {
         setLoading(false)
         const userId = response.data?.data?.accessToken
         localStorage.setItem('userId', userId)
-        navigate('/index');
+        navigate('/');
       }
     } else {
       setLoading(false)

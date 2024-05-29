@@ -182,7 +182,7 @@ export default function Navbar({ navClass, navLight }) {
                       onClick={() => {
                         localStorage.removeItem('userId')
                         console.logg('afterr clear')
-                        navigate('/index')}}>
+                        navigate('/')}}>
                         <FiLogOut className="fea icon-sm me-2 align-middle" />
                         Logout
                       </Link>
@@ -207,11 +207,11 @@ export default function Navbar({ navClass, navLight }) {
                   : ''
               } has-submenu parent-menu-item`}
             >
-              <Link to="/index">Home</Link>
+              <Link to="/">Home</Link>
               <span className="menu-arrow"></span>
               <ul className="submenu">
                 <li className={manu === 'index' || '' ? 'active' : ''}>
-                  <Link to="/index" className="sub-menu-item">
+                  <Link to="/" className="sub-menu-item">
                     Hero One
                   </Link>
                 </li>

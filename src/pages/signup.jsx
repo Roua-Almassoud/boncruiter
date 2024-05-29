@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Api from '../api/Api';
-import PhoneInput from "react-phone-input-2";
-import "react-phone-input-2/lib/style.css";
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
 import Navbar from '../components/navbar';
 import Footer from '../components/footer';
 import ScrollTop from '../components/scrollTop';
@@ -32,8 +32,7 @@ export default function Signup() {
           delete errorsList[field];
         }
         delete errorsList[field];
-      } 
-      else if (field !== 'phone')
+      } else if (field !== 'phone')
         errorsList = { ...errorsList, [field]: 'Field is Required!' };
     } else {
       Object.keys(user).map((item) => {
@@ -49,10 +48,14 @@ export default function Signup() {
         } else {
           errorsList = { ...errorsList };
 
-          // if (item === 'phone' && !Utils.isEmpty(user[item])) {
-          //   if (!Utils.validatePhoneNumber(user[item]))
-          //     errorsList = { ...errorsList, phone: 'Invalid Phone Number!' };
-          // }
+          if (item === 'phone' && !Utils.isEmpty(user[item])) {
+            if (!Utils.regexCheck(user[item], 'phone'))
+              errorsList = {
+                ...errorsList,
+                phone: 'Invalid Phone Number!',
+              };
+            else delete errorsList[field];
+          }
         }
       });
     }
@@ -175,13 +178,11 @@ export default function Signup() {
                       }
                     /> */}
 
-                  <PhoneInput
-                    className="number"
-                    country={"us"}
-                    value={user?.phone}
-                      onChange={(event) =>
-                        handleChange(event, 'phone')
-                      }
+                    <PhoneInput
+                      className="number"
+                      country={'us'}
+                      value={user?.phone}
+                      onChange={(event) => handleChange(event, 'phone')}
                     />
                     <div className={errors.phone ? 'invalid-feedback' : ''}>
                       {errors.phone}

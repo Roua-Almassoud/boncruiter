@@ -139,7 +139,7 @@ export default function Profile() {
         setLoading(false);
         const userId = response.data?.data?.User?.id;
         localStorage.setItem('userId', userId);
-        navigate('/index');
+        navigate('/');
       }
     } else {
       setLoading(false);

@@ -15,7 +15,7 @@ function App() {
     <>
       <Routes>
         <Route path="/" exact element={<Index />} />
-        <Route path="/index" exact element={<Index />} />
+        {/* <Route path="/index" exact element={<Index />} /> */}
         <Route path="/signup" exact element={<Signup />} />
       
         <Route path="/upload" exact element={<UploadCV />} />
