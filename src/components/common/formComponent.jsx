@@ -8,8 +8,20 @@ import _ from 'lodash';
 import Utils from '../utils/utils';
 import PhoneInput from 'react-phone-input-2';
 import Multiselect from 'multiselect-react-dropdown';
+import Select from 'react-dropdown-select';
+import DatePicker from 'react-date-picker';
+import 'react-date-picker/dist/DatePicker.css';
+import 'react-calendar/dist/Calendar.css';
 
-function FormComponent({ fields, formData, saveSection, next, userList }) {
+function FormComponent({
+  fields,
+  formData,
+  saveSection,
+  next,
+  userList,
+  saveSectionForm,
+  type = '',
+}) {
   const [validated, setValidated] = useState(false);
   const [form, setForm] = useState(formData);
   const [errors, setErrors] = useState({});
@@ -53,7 +65,8 @@ function FormComponent({ fields, formData, saveSection, next, userList }) {
     const isErrorsEmpty = _.isEmpty(errorsObject);
     if (isErrorsEmpty && _.isNull(field)) {
       setValidated(true);
-      saveSection(form, selectedItems);
+      if (next) saveSection(form, selectedItems);
+      else saveSectionForm(form);
     }
 
     setErrors(errorsObject);
@@ -76,6 +89,18 @@ function FormComponent({ fields, formData, saveSection, next, userList }) {
 
   const onRemove = (selectedList, removedItem) => {
     setSelectedItems(selectedList);
+  };
+
+  const changeList = (values, field) => {
+    let value = values[0];
+    if (field === 'language') {
+      form.id = value.id;
+      form.name = value.name;
+      setForm({ ...form });
+    } else {
+      form[field] = value;
+      setForm({ ...form });
+    }
   };
 
   const renderInputs = (field) => {
@@ -125,6 +150,49 @@ function FormComponent({ fields, formData, saveSection, next, userList }) {
             </div>
           );
           break;
+        case 'list':
+          fieldInput = (
+            <div>
+              <Select
+                options={field.options}
+                labelField={'name'}
+                valueField="id"
+                values={field.name === 'language' ? [form] : [form[field.name]]}
+                onChange={(values) => changeList(values, field.name)}
+              />
+            </div>
+          );
+          break;
+
+        case 'staticList':
+          fieldInput = (
+            <div>
+              <Form.Select
+                aria-label="Default select example"
+                onChange={(e) => updateForm(e, field.name, e.target.value)}
+                value={form[field.name]}
+              >
+                <option>{field.firstItem}</option>
+                {field.options?.map((option) => {
+                  return <option value={option.value}>{option.name}</option>;
+                })}
+              </Form.Select>
+            </div>
+          );
+          break;
+
+        case 'radio':
+          fieldInput = (
+            <div>
+              <Form.Check
+                type={'checkbox'}
+                label={field.label}
+                onChange={(e) => updateForm(e, field.name, !form[field.name])}
+                checked={form[field.name]}
+              />
+            </div>
+          );
+          break;
       }
 
       let returnedFieldWrapper = (
@@ -151,19 +219,26 @@ function FormComponent({ fields, formData, saveSection, next, userList }) {
         fields.map((field, index) => {
           return renderInputs(field);
         })}
-      <button className={'nav-button'} onClick={(e) => validate(e)}>
-        Save
-      </button>
-      <button
-        className={'nav-button-border'}
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          next();
-        }}
-      >
-        Next
-      </button>
+      <div className="form-action">
+        <button
+          className={`${next ? 'nav-button' : 'section-button'}`}
+          onClick={(e) => validate(e)}
+        >
+          {`${type === 'new' ? 'Add' : 'Save'}`}
+        </button>
+        {next && (
+          <button
+            className={'nav-button-border'}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              next();
+            }}
+          >
+            Next
+          </button>
+        )}
+      </div>
     </Form>
   );
 }

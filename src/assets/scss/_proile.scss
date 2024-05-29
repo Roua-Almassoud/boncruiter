@@ -63,8 +63,61 @@
   background-color: var(--primaryColor) !important;
 }
 
-.alert-danger.profile-alert{
-    width: auto;
-    max-width: none !important;
-    margin-top: 20px;
+.alert-danger.profile-alert {
+  width: auto;
+  max-width: none !important;
+  margin-top: 20px;
+}
+.react-dropdown-select {
+  border: 1px solid #ccc !important;
+  border-radius: 4px !important;
+}
+
+.react-dropdown-select-item:hover,
+.css-z2hyoe-ItemComponent.react-dropdown-select-item-selected {
+  background-color: var(--primaryColor) !important;
+  color: white !important;
+}
+.add-section {
+  text-align: right;
+}
+.add-section .plus.fea {
+  color: var(--primaryColor);
+  cursor: pointer;
+}
+
+.data-list {
+  padding-top: 15px;
+}
+.data-list .data p:not(:first-child) {
+  margin-bottom: 0;
+  font-size: 14px;
+  color: rgba(60, 55, 91, 0.5);
+}
+.action-section {
+  text-align: right;
+}
+.action-section .icon {
+  color: rgba(60, 55, 91, 0.5);
+  width: 20px;
+  height: 20px;
+  margin-right: 20px;
+  cursor: pointer;
+}
+.action-section .icon:hover {
+  color: var(--primaryColor);
+}
+.form-action {
+  text-align: right;
+  margin-top: 20px;
+}
+.section-button {
+  background: transparent;
+  text-decoration: underline;
+  color: var(--primaryColor);
+  border: none;
+  cursor: pointer;
+}
+.card {
+  margin-bottom: 20px;
 }

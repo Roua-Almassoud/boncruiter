@@ -39,6 +39,7 @@ export default function Profile() {
   const [errors, setErrors] = useState({});
   const [selectedSection, setSelectedSection] = useState('basicInfo');
   const [skills, setSkills] = useState([]);
+  const [availableLanguages, setAvailableLanguages] = useState([]);
   const getFullProfile = async () => {
     setLoading(true);
     const response = await Api.call({}, `/user/full`, 'get', '');
@@ -67,6 +68,20 @@ export default function Profile() {
         });
       }
       setSkills(availableSkills);
+      setLoading(false);
+    } else {
+      setLoading(false);
+    }
+  };
+
+  const getAvailableLanguages = async () => {
+    setLoading(true);
+    const response = await Api.call({}, `/user/available-languages`, 'get', '');
+    if (response.data) {
+      let availableLanguagesList = response.data.data.list.map((language) => {
+        return { id: language.id, name: language.name || 'None' };
+      });
+      setAvailableLanguages(availableLanguagesList);
       setLoading(false);
     } else {
       setLoading(false);
@@ -139,8 +154,11 @@ export default function Profile() {
     setSelectedSection(section);
     const selectedIndex = sectionsList.indexOf(selectedSection);
     const nextSectionKey = sectionsList[selectedIndex + 1];
-    if (nextSectionKey === 'skills') {
+    if (section === 'skills') {
       getAvailableSkills();
+    }
+    if (section === 'languages') {
+      getAvailableLanguages();
     }
   };
 
@@ -150,6 +168,9 @@ export default function Profile() {
     setSelectedSection(nextSectionKey);
     if (nextSectionKey === 'skills') {
       getAvailableSkills();
+    }
+    if (nextSectionKey === 'languages') {
+      getAvailableLanguages();
     }
   };
 
@@ -174,17 +195,67 @@ export default function Profile() {
     return sections;
   };
 
-  const userSkills = () => {
-    let formattedUserSkills = [];
-    if (userSections['skills']) {
-      userSections['skills'].map((userSkill) => {
-        formattedUserSkills.push({
-          id: userSkill.skillId,
-          name: userSkill.skillName,
-        });
-      });
+  const userData = () => {
+    let formattedData = [];
+    switch (selectedSection) {
+      case 'skills':
+        if (userSections['skills']) {
+          userSections['skills'].map((userSkill) => {
+            formattedData.push({
+              id: userSkill.skillId,
+              name: userSkill.skillName,
+            });
+          });
+        }
+        break;
+      case 'languages':
+        if (userSections['languages']) {
+          userSections['languages'].map((userLanguage) => {
+            formattedData.push({
+              id: userLanguage.languageId,
+              name: userLanguage.languageName,
+              level: userLanguage.level || {
+                id: 'none',
+                name: 'None',
+              },
+              tempId: userLanguage.languageId,
+            });
+          });
+        }
+        break;
+      case 'education':
+        if (userSections['education']) {
+          userSections['education'].map((item) => {
+            formattedData.push({
+              ...item,
+              tempId: Utils.unique(),
+            });
+          });
+        }
+        break;
+      case 'certificates':
+        if (userSections['certificates']) {
+          userSections['certificates'].map((item) => {
+            formattedData.push({
+              ...item,
+              tempId: Utils.unique(),
+            });
+          });
+        }
+        break;
+
+      case 'experiences':
+        if (userSections['experiences']) {
+          userSections['experiences'].map((item) => {
+            formattedData.push({
+              ...item,
+              tempId: Utils.unique(),
+            });
+          });
+        }
+        break;
     }
-    return formattedUserSkills;
+    return formattedData;
   };
 
   return (
@@ -204,15 +275,17 @@ export default function Profile() {
                   : Utils.capitalizeFirstLetter(selectedSection)}
               </h3>
               <Section
+                key={Utils.unique()}
                 section={selectedSection}
                 sectionData={
-                  selectedSection === 'skills'
-                    ? userSkills()
+                  selectedSection !== 'basicInfo'
+                    ? userData()
                     : userSections[selectedSection]
                 }
                 loading={setLoading}
                 next={next}
                 availableSkills={skills}
+                languages={availableLanguages}
               />
             </div>
           </div>
