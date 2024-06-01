@@ -22,12 +22,12 @@ function App() {
           <Route path="/" exact element={<Index />} />
           <Route path="/signup" exact element={<Signup />} />
           <Route path="/login" exact element={<Login />} />
+          <Route path="/verify-account" exact element={<VeriyAccount />} />
         </Route>
         <Route element={<PrivateRoutes />}>
           <Route path="/logout" exact element={<Logout />} />
           <Route path="/upload" exact element={<UploadCV />} />
           <Route path="/profile" exact element={<Profile />} />
-          <Route path="/verify-account" exact element={<VeriyAccount />} />
         </Route>
       </Routes>
     </>
