@@ -4,7 +4,13 @@ import logoDark from '../assets/images/logo-dark.png';
 import logoLight from '../assets/images/logo-light.png';
 import bonzuttner from '../assets/images/bonzuttner-without-bg.png';
 import client from '../assets/images/team/07.jpg';
-import { LuSearch,FiUser,FiSettings,FiLock,FiLogOut } from "../assets/icons/vander";
+import {
+  LuSearch,
+  FiUser,
+  FiSettings,
+  FiLock,
+  FiLogOut,
+} from '../assets/icons/vander';
 
 export default function Navbar({ navClass, navLight }) {
   const navigate = useNavigate();
@@ -178,11 +184,10 @@ export default function Navbar({ navClass, navLight }) {
                       </Link>
                       <div className="dropdown-divider border-top"></div>
 
-                      <Link className="dropdown-item fw-medium fs-6"
-                      onClick={() => {
-                        localStorage.removeItem('userId')
-                        console.logg('afterr clear')
-                        navigate('/')}}>
+                      <Link
+                        className="dropdown-item fw-medium fs-6"
+                        to="/logout"
+                      >
                         <FiLogOut className="fea icon-sm me-2 align-middle" />
                         Logout
                       </Link>

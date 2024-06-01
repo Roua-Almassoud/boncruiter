@@ -221,7 +221,7 @@ function FormComponent({
         })}
       <div className="form-action">
         <button
-          className={`${next ? 'nav-button' : 'section-button'}`}
+          className={`${next ? 'nav-button' : 'underline-button'}`}
           onClick={(e) => validate(e)}
         >
           {`${type === 'new' ? 'Add' : 'Save'}`}

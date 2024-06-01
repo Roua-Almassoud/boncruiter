@@ -11,6 +11,7 @@ import Utils from '../components/utils/utils';
 
 export default function Signup() {
   const navigate = useNavigate();
+  const [alertError, setAlertError] = useState('');
   const [user, setUser] = useState({
     email: '',
     password: '',
@@ -67,14 +68,20 @@ export default function Signup() {
     setLoading(true);
     if (Utils.isEmptyObject(errorsList)) {
       const response = await Api.call(user, `/user/auth/register`, 'post', '');
-      if (response.data) {
+      if (response.data.code === '200') {
         setLoading(false);
         const userId = response.data?.data?.User?.id;
-
+        setAlertError('');
         navigate('/verify-account', { state: user.email });
+      } else {
+        setLoading(false);
+        setAlertError(
+          response.data.message || 'Something went wrong, please try again!'
+        );
       }
     } else {
       setLoading(false);
+      setAlertError('');
     }
   };
   const handleChange = (value, field) => {
@@ -196,9 +203,22 @@ export default function Signup() {
                   >
                     Submit
                   </button>
+                  {alertError && (
+                    <div class="alert alert-danger profile-alert" role="alert">
+                      {alertError}
+                    </div>
+                  )}
                 </form>
               </div>
             </div>
+          </div>
+          <div className="action">
+            <button
+              className="underline-button"
+              onClick={() => navigate('/login')}
+            >
+              Login
+            </button>
           </div>
         </section>
 

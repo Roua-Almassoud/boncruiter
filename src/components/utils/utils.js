@@ -43,6 +43,7 @@ class Utils {
   static unique() {
     return Math.random().toString().substring(2, 8);
   }
+
 }
 
 export default Utils;

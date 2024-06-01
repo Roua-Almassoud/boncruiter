@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Api from '../api/Api';
-
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
 import Navbar from '../components/navbar';
 import Footer from '../components/footer';
 import ScrollTop from '../components/scrollTop';
 import Loader from '../components/common/loader';
 import Utils from '../components/utils/utils';
 
-export default function VerifyAccount() {
+export default function Login() {
   const navigate = useNavigate();
-  const { state } = useLocation();
   const [alertError, setAlertError] = useState('');
-  const [form, setForm] = useState({
-    email: state,
-    code: '1234',
+  const [user, setUser] = useState({
+    email: '',
+    password: '',
   });
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
@@ -22,9 +22,9 @@ export default function VerifyAccount() {
     let errorsList = errors;
     if (field) {
       if (value) {
-        if (field === 'phone' && !Utils.isEmpty(form[field])) {
-          if (!Utils.validatePhoneNumber(form[field]))
-            errorsList = { ...errorsList, phone: 'Invalid Phone Number!' };
+        if (field === 'phone' && !Utils.isEmpty(user[field])) {
+          // if (!Utils.validatePhoneNumber(user[field]))
+          //   errorsList = { ...errorsList, phone: 'Invalid Phone Number!' };
         } else {
           delete errorsList[field];
         }
@@ -32,22 +32,26 @@ export default function VerifyAccount() {
       } else if (field !== 'phone')
         errorsList = { ...errorsList, [field]: 'Field is Required!' };
     } else {
-      Object.keys(form).map((item) => {
+      Object.keys(user).map((item) => {
         if (item !== 'phone' && item !== 'image') {
-          if (!form[item]) {
+          if (!user[item]) {
             errorsList = { ...errorsList, [item]: 'Field is Required!' };
           } else {
             if (item === 'email') {
-              if (!Utils.validateEmail(form[item]))
+              if (!Utils.validateEmail(user[item]))
                 errorsList = { ...errorsList, email: 'Invalid Email Address!' };
             }
           }
         } else {
           errorsList = { ...errorsList };
 
-          if (item === 'phone' && !Utils.isEmpty(form[item])) {
-            if (!Utils.validatePhoneNumber(form[item]))
-              errorsList = { ...errorsList, phone: 'Invalid Phone Number!' };
+          if (item === 'phone' && !Utils.isEmpty(user[item])) {
+            if (!Utils.regexCheck(user[item], 'phone'))
+              errorsList = {
+                ...errorsList,
+                phone: 'Invalid Phone Number!',
+              };
+            else delete errorsList[field];
           }
         }
       });
@@ -59,18 +63,13 @@ export default function VerifyAccount() {
     const errorsList = validate();
     setLoading(true);
     if (Utils.isEmptyObject(errorsList)) {
-      const response = await Api.call(
-        form,
-        `/user/auth/verifyAccount`,
-        'post',
-        ''
-      );
+      const response = await Api.call(user, `/user/auth/login`, 'post', '');
       if (response.data.code === '200') {
         setLoading(false);
         const userId = response.data?.data?.accessToken;
         localStorage.setItem('userId', userId);
         setAlertError('');
-        navigate('/');
+        navigate('/profile');
       } else {
         setLoading(false);
         setAlertError(
@@ -84,7 +83,7 @@ export default function VerifyAccount() {
   };
   const handleChange = (value, field) => {
     validate(field, value);
-    setForm({ ...form, [field]: value });
+    setUser({ ...user, [field]: value });
   };
   return (
     <>
@@ -107,35 +106,34 @@ export default function VerifyAccount() {
                       type="text"
                       className="form-control"
                       id="email"
-                      value={form?.email}
-                      readOnly
-                      disabled
+                      value={user?.email}
+                      onChange={(event) =>
+                        handleChange(event.target.value, 'email')
+                      }
                       aria-describedby="email"
                     />
-                  </div>
-                  <div className="mb-3">
-                    <label for="code" className="form-label">
-                      Code
-                    </label>
-                    <input
-                      type="number"
-                      className="form-control"
-                      id="code"
-                      value={form?.code}
-                      onChange={(event) =>
-                        handleChange(event.target.value, 'code')
-                      }
-                    />
-                    <div className={errors.code ? 'invalid-feedback' : ''}>
-                      {errors.code}
+                    <div className={errors.email ? 'invalid-feedback' : ''}>
+                      {errors.email}
                     </div>
                   </div>
-
-                  <button
-                    //type="submit"
-                    className="nav-button"
-                    onClick={handleSubmit}
-                  >
+                  <div className="mb-3">
+                    <label for="password" className="form-label">
+                      Password
+                    </label>
+                    <input
+                      type="password"
+                      className="form-control"
+                      id="password"
+                      value={user?.password}
+                      onChange={(event) =>
+                        handleChange(event.target.value, 'password')
+                      }
+                    />
+                    <div className={errors.password ? 'invalid-feedback' : ''}>
+                      {errors.password}
+                    </div>
+                  </div>
+                  <button className="nav-button" onClick={handleSubmit}>
                     Submit
                   </button>
                   {alertError && (
@@ -146,6 +144,14 @@ export default function VerifyAccount() {
                 </form>
               </div>
             </div>
+          </div>
+          <div className="action">
+            <button
+              className="underline-button"
+              onClick={() => navigate('/signup')}
+            >
+              Sign up
+            </button>
           </div>
         </section>
 
