@@ -195,9 +195,14 @@ export default function Navbar({ navClass, navLight }) {
                   </div>
                 </div>
               ) : (
-                <Link to="/signup">
-                  <button className="nav-button">Sign up</button>
-                </Link>
+                <>
+                  <Link to="/signup">
+                    <button className="nav-button">Sign up</button>
+                  </Link>
+                  <Link to="/login">
+                    <button className="nav-button">Login</button>
+                  </Link>
+                </>
               )}
             </div>
           </li>

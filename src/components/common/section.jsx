@@ -289,7 +289,7 @@ export default function Section(props) {
     } else {
       loading(false);
       setAlertError(
-        response.data.message || 'Something went wrong, please try again!'
+        response.message || 'Something went wrong, please try again!'
       );
     }
   };
@@ -311,7 +311,7 @@ export default function Section(props) {
       );
 
       selectedObject = { ...data };
-     
+
       setSectionFormData(updatedData);
     }
   };

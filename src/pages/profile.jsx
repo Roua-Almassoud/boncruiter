@@ -40,12 +40,21 @@ export default function Profile() {
   const [selectedSection, setSelectedSection] = useState('basicInfo');
   const [skills, setSkills] = useState([]);
   const [availableLanguages, setAvailableLanguages] = useState([]);
+
   const getFullProfile = async () => {
     setLoading(true);
     const response = await Api.call({}, `/user/full`, 'get', '');
     if (response.data) {
       let fullData = response.data.data;
-      setUserSections(fullData);
+      let updatedInfo = userSections;
+      updatedInfo.basicInfo = fullData.basicInfo;
+      updatedInfo.skills = fullData.skills;
+      updatedInfo.languages = fullData.languages;
+      updatedInfo.education = fullData.education;
+      updatedInfo.certificates = fullData.certificates;
+      updatedInfo.projects = fullData.projects;
+      updatedInfo.experiences = fullData.experiences;
+      setUserSections(updatedInfo);
       setLoading(false);
     } else {
       setLoading(false);
@@ -166,6 +175,10 @@ export default function Profile() {
     const selectedIndex = sectionsList.indexOf(selectedSection);
     const nextSectionKey = sectionsList[selectedIndex + 1];
     setSelectedSection(nextSectionKey);
+    if (Utils.isEmpty(state)) {
+      getFullProfile();
+    }
+
     if (nextSectionKey === 'skills') {
       getAvailableSkills();
     }
@@ -274,19 +287,21 @@ export default function Profile() {
                   ? 'Basic Information'
                   : Utils.capitalizeFirstLetter(selectedSection)}
               </h3>
-              <Section
-                key={Utils.unique()}
-                section={selectedSection}
-                sectionData={
-                  selectedSection !== 'basicInfo'
-                    ? userData()
-                    : userSections[selectedSection]
-                }
-                loading={setLoading}
-                next={next}
-                availableSkills={skills}
-                languages={availableLanguages}
-              />
+              {!loading && (
+                <Section
+                  key={Utils.unique()}
+                  section={selectedSection}
+                  sectionData={
+                    selectedSection !== 'basicInfo'
+                      ? userData()
+                      : userSections[selectedSection]
+                  }
+                  loading={setLoading}
+                  next={next}
+                  availableSkills={skills}
+                  languages={availableLanguages}
+                />
+              )}
             </div>
           </div>
         </section>

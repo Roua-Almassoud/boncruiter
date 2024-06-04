@@ -145,14 +145,14 @@ export default function Login() {
               </div>
             </div>
           </div>
-          <div className="action">
+          {/* <div className="action">
             <button
               className="underline-button"
               onClick={() => navigate('/signup')}
             >
               Sign up
             </button>
-          </div>
+          </div> */}
         </section>
 
         <Footer />

@@ -1,9 +1,11 @@
-import { Outlet, Navigate } from 'react-router-dom'
-import { useAuth } from './useAuth'
+import { Outlet, Navigate } from 'react-router-dom';
+import { useAuth } from './useAuth';
 
 function PrivateRoutes() {
-    const token = useAuth()
-    return token ? <Outlet /> : <Navigate to='/login' />
+  const token = useAuth();
+  if (location.pathname !== '/')
+    return token ? <Outlet /> : <Navigate to="/login" />;
+  else return <Outlet />;
 }
 
-export default PrivateRoutes
+export default PrivateRoutes;

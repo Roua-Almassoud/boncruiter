@@ -48,7 +48,6 @@ export default function Signup() {
           }
         } else {
           errorsList = { ...errorsList };
-
           if (item === 'phone' && !Utils.isEmpty(user[item])) {
             if (!Utils.regexCheck(user[item], 'phone'))
               errorsList = {
@@ -84,9 +83,16 @@ export default function Signup() {
       setAlertError('');
     }
   };
-  const handleChange = (value, field) => {
-    validate(field, value);
-    setUser({ ...user, [field]: value });
+  const handleChange = (
+    value,
+    field,
+    country = '',
+    event = null,
+    formattedValue = ''
+  ) => {
+    let updatedValue = field === 'phone' ? formattedValue : value;
+    validate(field, updatedValue);
+    setUser({ ...user, [field]: updatedValue });
   };
   return (
     <>
@@ -189,7 +195,16 @@ export default function Signup() {
                       className="number"
                       country={'us'}
                       value={user?.phone}
-                      onChange={(event) => handleChange(event, 'phone')}
+                      onChange={(value, country, event, formattedValue) =>
+                        handleChange(
+                          value,
+                          'phone',
+                          country,
+                          event,
+                          formattedValue
+                        )
+                      }
+                      //withCountryCallingCode={true}
                     />
                     <div className={errors.phone ? 'invalid-feedback' : ''}>
                       {errors.phone}
@@ -212,14 +227,14 @@ export default function Signup() {
               </div>
             </div>
           </div>
-          <div className="action">
+          {/* <div className="action">
             <button
               className="underline-button"
               onClick={() => navigate('/login')}
             >
               Login
             </button>
-          </div>
+          </div> */}
         </section>
 
         <Footer />
