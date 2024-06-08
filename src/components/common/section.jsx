@@ -524,6 +524,13 @@ export default function Section(props) {
       case 'basicInfo':
         form = {
           ...sectionData,
+          brief: sectionData?.brief,
+          github: sectionData?.github,
+          portfolioUrl: sectionData?.portfolioUrl,
+          birthDate: sectionData?.birthDate,
+          phoneNumber: sectionData?.phoneNumber,
+          location: sectionData?.location,
+          linkedinUrl: sectionData?.linkedinUrl,
           noticePeriod: sectionData?.noticePeriod,
           desiredSalary: sectionData?.desiredSalary,
         };
@@ -553,13 +560,13 @@ export default function Section(props) {
             label: 'Birth Date',
             regex: 'date',
           },
-          {
-            name: 'phoneNumber',
-            type: 'phone',
-            optional: true,
-            label: 'Phone Number',
-            regex: 'phone',
-          },
+          // {
+          //   name: 'phoneNumber',
+          //   type: 'phone',
+          //   optional: true,
+          //   label: 'Phone Number',
+          //   regex: 'phone',
+          // },
           {
             name: 'brief',
             type: 'text',

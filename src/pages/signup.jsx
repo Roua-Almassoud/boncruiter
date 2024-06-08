@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Api from '../api/Api';
-import PhoneInput from 'react-phone-input-2';
-import 'react-phone-input-2/lib/style.css';
+import { PhoneInput } from 'react-international-phone';
+//import PhoneInput from 'react-phone-input-2';
+//import 'react-phone-input-2/lib/style.css';
+import 'react-international-phone/style.css';
 import Navbar from '../components/navbar';
 import Footer from '../components/footer';
 import ScrollTop from '../components/scrollTop';
 import Loader from '../components/common/loader';
 import Utils from '../components/utils/utils';
+import { PhoneNumberUtil } from 'google-libphonenumber';
 
 export default function Signup() {
+  const phoneUtil = PhoneNumberUtil.getInstance();
   const navigate = useNavigate();
   const [alertError, setAlertError] = useState('');
   const [user, setUser] = useState({
@@ -22,6 +26,13 @@ export default function Signup() {
   });
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
+  const isPhoneValid = (phone) => {
+    try {
+      return phoneUtil.isValidNumber(phoneUtil.parseAndKeepRawInput(phone));
+    } catch (error) {
+      return false;
+    }
+  };
   const validate = (field = '', value = '') => {
     let errorsList = errors;
     if (field) {
@@ -29,6 +40,13 @@ export default function Signup() {
         if (field === 'phone' && !Utils.isEmpty(user[field])) {
           // if (!Utils.validatePhoneNumber(user[field]))
           //   errorsList = { ...errorsList, phone: 'Invalid Phone Number!' };
+          //if (!Utils.regexCheck(user[field], 'phone'))
+
+          if (!isPhoneValid(value))
+            errorsList = {
+              ...errorsList,
+              phone: 'Invalid Phone Number!',
+            };
         } else {
           delete errorsList[field];
         }
@@ -49,7 +67,7 @@ export default function Signup() {
         } else {
           errorsList = { ...errorsList };
           if (item === 'phone' && !Utils.isEmpty(user[item])) {
-            if (!Utils.regexCheck(user[item], 'phone'))
+            if (!isPhoneValid(user[item]))
               errorsList = {
                 ...errorsList,
                 phone: 'Invalid Phone Number!',
@@ -83,16 +101,8 @@ export default function Signup() {
       setAlertError('');
     }
   };
-  const handleChange = (
-    value,
-    field,
-    country = '',
-    event = null,
-    formattedValue = ''
-  ) => {
-    let updatedValue = field === 'phone' ? formattedValue : value;
-    validate(field, updatedValue);
-    setUser({ ...user, [field]: updatedValue });
+  const handleChange = (value, field) => {
+    setUser({ ...user, [field]: value });
   };
   return (
     <>
@@ -181,30 +191,14 @@ export default function Signup() {
                     <label for="phoneNumber" className="form-label">
                       Phone Number
                     </label>
-                    {/* <input
-                      type="number"
-                      className="form-control"
-                      id="phoneNumber"
-                      value={user?.phone}
-                      onChange={(event) =>
-                        handleChange(event.target.value, 'phone')
-                      }
-                    /> */}
-
                     <PhoneInput
                       className="number"
                       country={'us'}
                       value={user?.phone}
-                      onChange={(value, country, event, formattedValue) =>
-                        handleChange(
-                          value,
-                          'phone',
-                          country,
-                          event,
-                          formattedValue
-                        )
-                      }
-                      //withCountryCallingCode={true}
+                      // onChange={(value, country, event, formattedValue) =>
+                      //   handleChange(formattedValue, 'phone')
+                      // }
+                      onChange={(value) => handleChange(value, 'phone')}
                     />
                     <div className={errors.phone ? 'invalid-feedback' : ''}>
                       {errors.phone}

@@ -6,12 +6,14 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Row from 'react-bootstrap/Row';
 import _ from 'lodash';
 import Utils from '../utils/utils';
-import PhoneInput from 'react-phone-input-2';
+import { PhoneInput } from 'react-international-phone';
 import Multiselect from 'multiselect-react-dropdown';
 import Select from 'react-dropdown-select';
 import DatePicker from 'react-date-picker';
 import 'react-date-picker/dist/DatePicker.css';
 import 'react-calendar/dist/Calendar.css';
+import 'react-international-phone/style.css';
+import { PhoneNumberUtil } from 'google-libphonenumber';
 
 function FormComponent({
   fields,
@@ -27,7 +29,15 @@ function FormComponent({
   const [errors, setErrors] = useState({});
   const [errorMessage, setErrorMessage] = useState('');
   const [selectedItems, setSelectedItems] = useState([]);
-
+  const phoneUtil = PhoneNumberUtil.getInstance();
+  const isPhoneValid = (phone) => {
+    if (phone)
+      try {
+        return phoneUtil.isValidNumber(phoneUtil.parseAndKeepRawInput(phone));
+      } catch (error) {
+        return false;
+      }
+  };
   const handleSubmit = (event) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -42,10 +52,17 @@ function FormComponent({
     const errorsObject = { ...errors };
     if (field) {
       let field_conf = fields.find((f) => f.name === field);
-      if (!Utils.isEmpty(field_conf.regex)) {
-        if (!Utils.regexCheck(form[field], field_conf.regex))
-          errorsObject[field] = `Invalid ${field_conf.label}`;
-        else delete errorsObject[field];
+
+
+      if (!Utils.isEmpty(field_conf?.regex)) {
+        if (field_conf.regex === 'phone') {
+          if (!isPhoneValid(form[field]))
+            errorsObject[field] = `Invalid ${field_conf.label}`;
+          else delete errorsObject[field];
+        } else {
+          if (!Utils.regexCheck(form[field], field_conf.regex))
+            errorsObject[field] = `Invalid ${field_conf.label}`;
+        }
       } else if (typeof form[field] === 'object') {
         if (!Utils.isEmpty(form[field])) {
           delete errorsObject[field];
@@ -130,8 +147,16 @@ function FormComponent({
               <PhoneInput
                 className="number"
                 country={'us'}
-                value={form[field.name]}
-                onChange={(e) => updateForm(e, field.name, e)}
+                value={form[field.name] ? form[field.name] : ''}
+                // onChange={(value, country, event, formattedValue) =>
+                //   updateForm(event, field.name, formattedValue)
+                // }
+                // onChange={(value) =>
+                //   updateForm('', form[field.name], value)
+                // }
+                handlePhoneValueChange={(event, value) =>
+                  updateForm(event, form[field.name], event.target.value)
+                }
               />
             </div>
           );

@@ -620,7 +620,8 @@ button:not(:disabled) {
 /*         Form            */
 /*===============================*/
 .form-control,
-.react-tel-input {
+.react-tel-input,
+.react-international-phone-input-container {
   border: 1px solid $gray-200;
   font-size: 15px;
   line-height: 26px;
@@ -628,6 +629,13 @@ button:not(:disabled) {
   border-radius: 6px;
   font-weight: 500 !important;
   color: $dark !important;
+  .react-international-phone-input {
+    width: 100%;
+    border: none !important;
+  }
+  .react-international-phone-country-selector-dropdown{
+    z-index: 100;
+  }
   &:focus {
     border-color: $primary;
     box-shadow: none;
