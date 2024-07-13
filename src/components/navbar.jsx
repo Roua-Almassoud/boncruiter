@@ -218,24 +218,6 @@ export default function Navbar({ navClass, navLight }) {
               } has-submenu parent-menu-item`}
             >
               <Link to="/">Home</Link>
-              <span className="menu-arrow"></span>
-              <ul className="submenu">
-                <li className={manu === 'index' || '' ? 'active' : ''}>
-                  <Link to="/" className="sub-menu-item">
-                    Hero One
-                  </Link>
-                </li>
-                <li className={manu === 'index-two' ? 'active' : ''}>
-                  <Link to="/index-two" className="sub-menu-item">
-                    Hero Two
-                  </Link>
-                </li>
-                <li className={manu === 'index-three' ? 'active' : ''}>
-                  <Link to="/index-three" className="sub-menu-item">
-                    Hero Three
-                  </Link>
-                </li>
-              </ul>
             </li>
             <li className={manu === 'contactus' ? 'active' : ''}>
               <Link to="/contactus" className="sub-menu-item">

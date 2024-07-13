@@ -13,6 +13,7 @@ import Login from './pages/login';
 import Logout from './pages/logout';
 import PrivateRoutes from './helper/privateRoutes';
 import PublicRoutes from './helper/publicRoutes';
+import JobList from './pages/jobs';
 
 function App() {
   return (
@@ -23,12 +24,14 @@ function App() {
           <Route path="/signup" exact element={<Signup />} />
           <Route path="/login" exact element={<Login />} />
           <Route path="/verify-account" exact element={<VeriyAccount />} />
+          
         </Route>
         <Route element={<PrivateRoutes />}>
           <Route path="/" exact element={<Index />} />
           <Route path="/logout" exact element={<Logout />} />
           <Route path="/upload" exact element={<UploadCV />} />
           <Route path="/profile" exact element={<Profile />} />
+          <Route path="/jobs" exact element={<JobList />} />
         </Route>
       </Routes>
     </>
