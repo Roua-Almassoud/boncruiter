@@ -24,7 +24,6 @@ function App() {
           <Route path="/signup" exact element={<Signup />} />
           <Route path="/login" exact element={<Login />} />
           <Route path="/verify-account" exact element={<VeriyAccount />} />
-          
         </Route>
         <Route element={<PrivateRoutes />}>
           <Route path="/" exact element={<Index />} />

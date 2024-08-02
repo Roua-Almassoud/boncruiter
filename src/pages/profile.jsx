@@ -173,7 +173,11 @@ export default function Profile() {
 
   const next = () => {
     const selectedIndex = sectionsList.indexOf(selectedSection);
-    const nextSectionKey = sectionsList[selectedIndex + 1];
+    let nextSectionKey = sectionsList[selectedIndex + 1];
+    
+    if (selectedIndex === sectionsList.length - 1) {
+      nextSectionKey = 'basicInfo';
+    }
     setSelectedSection(nextSectionKey);
     if (Utils.isEmpty(state)) {
       getFullProfile();

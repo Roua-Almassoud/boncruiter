@@ -555,10 +555,9 @@ export default function Section(props) {
           },
           {
             name: 'birthDate',
-            type: 'text',
+            type: 'date',
             optional: false,
             label: 'Birth Date',
-            regex: 'date',
           },
           // {
           //   name: 'phoneNumber',
@@ -577,7 +576,7 @@ export default function Section(props) {
           {
             name: 'github',
             type: 'text',
-            optional: false,
+            optional: true,
             label: 'Github Main Page Url',
             regex: 'uri',
           },
@@ -598,7 +597,7 @@ export default function Section(props) {
           {
             name: 'portfolioUrl',
             type: 'text',
-            optional: false,
+            optional: true,
             label: 'Portfolio Website Url',
             regex: 'uri',
           },

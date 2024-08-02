@@ -3,7 +3,7 @@ import { useAuth } from './useAuth';
 
 function PrivateRoutes() {
   const token = useAuth();
-  if (location.pathname !== '/')
+  if (location.pathname !== '/' && location.pathname !== '/jobs')
     return token ? <Outlet /> : <Navigate to="/login" />;
   else return <Outlet />;
 }

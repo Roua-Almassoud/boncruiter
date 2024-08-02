@@ -53,7 +53,6 @@ function FormComponent({
     if (field) {
       let field_conf = fields.find((f) => f.name === field);
 
-
       if (!Utils.isEmpty(field_conf?.regex)) {
         if (field_conf.regex === 'phone') {
           if (!isPhoneValid(form[field]))
@@ -214,6 +213,18 @@ function FormComponent({
                 label={field.label}
                 onChange={(e) => updateForm(e, field.name, !form[field.name])}
                 checked={form[field.name]}
+              />
+            </div>
+          );
+          break;
+        case 'date':
+          fieldInput = (
+            <div>
+              <DatePicker
+                selected={form[field.name]}
+                value={form[field.name]}
+                onChange={(date, e) => updateForm(e, field.name, date)}
+                format={'yyyy-MM-dd'}
               />
             </div>
           );

@@ -175,13 +175,13 @@ export default function Navbar({ navClass, navLight }) {
                         <FiUser className="fea icon-sm me-2 align-middle" />
                         Profile
                       </Link>
-                      <Link
+                      {/* <Link
                         to="candidate-profile-setting"
                         className="dropdown-item fw-medium fs-6"
                       >
                         <FiSettings className="fea icon-sm me-2 align-middle" />
                         Settings
-                      </Link>
+                      </Link> */}
                       <div className="dropdown-divider border-top"></div>
 
                       <Link
@@ -219,11 +219,11 @@ export default function Navbar({ navClass, navLight }) {
             >
               <Link to="/">Home</Link>
             </li>
-            <li className={manu === 'contactus' ? 'active' : ''}>
+            {/* <li className={manu === 'contactus' ? 'active' : ''}>
               <Link to="/contactus" className="sub-menu-item">
                 Contact Us
               </Link>
-            </li>
+            </li> */}
             <li className={manu === 'contactus' ? 'active' : ''}>
               <Link to="/upload" className="sub-menu-item">
                 Upload your CV
