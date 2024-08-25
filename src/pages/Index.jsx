@@ -3,24 +3,34 @@ import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/navbar';
 import Footer from '../components/footer';
 import ScrollTop from '../components/scrollTop';
-import { FiSearch,FiMapPin } from '../assets/icons/vander';
+import { FiSearch, FiMapPin } from '../assets/icons/vander';
 import Api from '../api/Api';
 import Select from 'react-dropdown-select';
+import Multiselect from 'multiselect-react-dropdown';
 
 export default function Index() {
   const navigate = useNavigate();
   const [searchForm, setSearchForm] = useState({
     title: '',
     location: '',
-    skills: '',
+    skills: [],
   });
   const [skills, setSkills] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedSkills, setSelectedSkills] = useState([]);
   const jobTypes = [
     { id: '1', name: 'Remote' },
     { id: '2', name: 'On-site' },
     { id: '3', name: 'Hybird' },
   ];
+
+  const onSelect = (selectedList, selectedItem) => {
+    setSelectedSkills(selectedList);
+  };
+
+  const onRemove = (selectedList, removedItem) => {
+    setSelectedSkills(selectedList);
+  };
 
   const getSkills = async () => {
     const response = await Api.call({}, `/user/available-skills`, 'get', '');
@@ -44,6 +54,8 @@ export default function Index() {
     setSearchForm({ ...searchForm, [field]: value });
   };
   const handleSearch = () => {
+    console.log('searchForm: ', searchForm, 'seleelle: ', selectedSkills);
+    if (selectedSkills.length > 0) searchForm.skills = selectedSkills;
     navigate('/jobs', { state: searchForm });
   };
   return (
@@ -138,14 +150,16 @@ export default function Index() {
                   /> */}
                 </div>
                 <div className="form-group col position-relative">
-                  <Select
-                    multi={false}
+                  <Multiselect
+                    className={`skills-select shadow bg-white${
+                      selectedSkills.length === 0 ? 'with-placeholder' : ''
+                    }`}
                     options={skills}
-                    labelField={'name'}
-                    valueField="id"
-                    value={searchForm.skills}
-                    onChange={(value) => handleChange(value[0]?.id, 'skills')}
-                    placeholder={'Skill'}
+                    selectedValues={selectedSkills}
+                    onSelect={onSelect}
+                    onRemove={onRemove}
+                    placeholder={'Skills'}
+                    displayValue="name"
                   />
                 </div>
                 <div className="form-group col col-2 position-relative">

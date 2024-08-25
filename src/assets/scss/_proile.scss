@@ -62,6 +62,25 @@
 .multiSelectContainer .chip {
   background-color: var(--primaryColor) !important;
 }
+.skills-select {
+  min-height: 50px;
+  .search-wrapper.searchWrapper {
+    height: inherit;
+    display: flex;
+    flex-wrap: wrap;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    .chip {
+      margin-bottom: 3px;
+      margin-top: 3px;
+    }
+  }
+  input {
+    height: 35px;
+    margin-top: 0px;
+  }
+}
 
 .alert-danger.profile-alert {
   width: auto;
@@ -143,4 +162,9 @@
   .react-date-picker__wrapper {
     border: none;
   }
+}
+.pagination .page-item.active .page-link,
+.pagination .page-item.active .page-link:hover {
+  background-color: var(--primaryColor);
+  border-color: var(--primaryColor);
 }

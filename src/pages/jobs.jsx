@@ -8,6 +8,7 @@ import Loader from '../components/common/loader';
 import Api from '../api/Api';
 import Select from 'react-dropdown-select';
 import Job from '../components/common/job';
+import Multiselect from 'multiselect-react-dropdown';
 
 export default function JobList() {
   const { state } = useLocation();
@@ -16,11 +17,14 @@ export default function JobList() {
   const [searchForm, setSearchForm] = useState(initialForm);
   const [jobsList, setJobsList] = useState([]);
   const [skills, setSkills] = useState([]);
+  const [selectedSkills, setSelectedSkills] = useState([]);
   const jobTypes = [
     { id: '1', name: 'Remote' },
     { id: '2', name: 'On-site' },
     { id: '3', name: 'Hybird' },
   ];
+  const [pages, setPages] = useState(0);
+  const [currentPage, setCurrentPage] = useState(0);
   const getSkills = async () => {
     const response = await Api.call({}, `/user/available-skills`, 'get', '');
     if (response.data) {
@@ -35,17 +39,26 @@ export default function JobList() {
     }
   };
   const getJobs = async () => {
+    const skillsSelected =
+      selectedSkills.length > 0 ? selectedSkills : searchForm?.skills || '';
     const title = searchForm?.title || '';
-    const skills = searchForm?.skills || '';
+    const skills =
+      skillsSelected?.map((skill) => {
+        return skill.id;
+      }) || '';
     const location = searchForm?.location || '';
+    console.log('skills: ', skills.join(','));
     let link = '/job?';
     if (title) link = link + 'title=' + title + '&';
     if (location) link = link + 'location=' + location + '&';
-    if (skills) link = link + 'skills=' + skills + '&';
+    if (skills.length > 0) link = link + 'skills=' + skills.join(',') + '&';
+    if (currentPage > 0) link = link + 'page=' + currentPage + '&';
     const response = await Api.call({}, link, 'get', '');
     if (response.data.code === '200') {
       let jobs = response.data.data.jobs;
+      const pages = response.data.data.pages;
       setJobsList(jobs);
+      setPages(pages);
       setLoading(false);
     } else {
       setLoading(false);
@@ -55,7 +68,7 @@ export default function JobList() {
   useEffect(() => {
     getJobs();
     getSkills();
-  }, []);
+  }, [currentPage]);
 
   const handleChange = (value, field) => {
     setSearchForm({ ...searchForm, [field]: value });
@@ -66,6 +79,34 @@ export default function JobList() {
     getJobs();
   };
 
+  const onSelect = (selectedList, selectedItem) => {
+    setSelectedSkills(selectedList);
+  };
+
+  const onRemove = (selectedList, removedItem) => {
+    setSelectedSkills(selectedList);
+  };
+
+  const pageChanged = (page) => {
+    setCurrentPage(page);
+  };
+
+  const renderPages = () => {
+    let pagesNumbers = [];
+    for (let i = 1; i <= pages; i++) {
+      pagesNumbers.push(
+        <li
+          className={`page-item ${currentPage === i && 'active'}`}
+          onClick={() => pageChanged(i)}
+        >
+          <a class="page-link" href="#">
+            {i}
+          </a>
+        </li>
+      );
+    }
+    return <>{pagesNumbers}</>;
+  };
   return (
     <>
       {loading && <Loader />}
@@ -144,15 +185,17 @@ export default function JobList() {
                     </div>
                   </div>
                   <div className="mt-4">
-                    <h6 className="mb-0">Skills</h6>
-                    <Select
-                      multi={false}
+                    <h6>Skills</h6>
+                    <Multiselect
+                      className={`skills-select shadow bg-white ${
+                        selectedSkills.length === 0 ? 'with-placeholder' : ''
+                      }`}
                       options={skills}
-                      labelField={'name'}
-                      valueField="id"
-                      value={searchForm.skills}
-                      onChange={(value) => handleChange(value[0]?.id, 'skills')}
-                      placeholder={'Skill'}
+                      selectedValues={selectedSkills}
+                      onSelect={onSelect}
+                      onRemove={onRemove}
+                      placeholder={'Skills'}
+                      displayValue="name"
                     />
                   </div>
 
@@ -179,45 +222,25 @@ export default function JobList() {
                   })}
                 </div>
 
-                {/* <div className="row">
+                <div className="row">
                   <div className="col-12 mt-4 pt-2">
-                    <ul className="pagination justify-content-center mb-0">
-                      <li className="page-item">
-                        <Link
-                          className="page-link"
-                          to="#"
-                          aria-label="Previous"
-                        >
-                          <span aria-hidden="true">
-                            <i className="mdi mdi-chevron-left fs-6"></i>
-                          </span>
-                        </Link>
-                      </li>
-                      <li className="page-item">
-                        <Link className="page-link" to="#">
-                          1
-                        </Link>
-                      </li>
-                      <li className="page-item active">
-                        <Link className="page-link" to="#">
-                          2
-                        </Link>
-                      </li>
-                      <li className="page-item">
-                        <Link className="page-link" to="#">
-                          3
-                        </Link>
-                      </li>
-                      <li className="page-item">
-                        <Link className="page-link" to="#" aria-label="Next">
-                          <span aria-hidden="true">
-                            <i className="mdi mdi-chevron-right fs-6"></i>
-                          </span>
-                        </Link>
-                      </li>
-                    </ul>
+                    <nav aria-label="Page navigation">
+                      <ul class="pagination justify-content-center">
+                        <li className={`page-item ${currentPage === 1 && 'disabled'}`}>
+                          <a class="page-link" href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                          </a>
+                        </li>
+                        {renderPages()}
+                        <li className={`page-item ${currentPage === pages && 'disabled'}`}>
+                          <a class="page-link" href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                          </a>
+                        </li>
+                      </ul>
+                    </nav>
                   </div>
-                </div> */}
+                </div>
               </div>
             </div>
           </div>

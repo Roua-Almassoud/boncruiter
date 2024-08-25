@@ -617,6 +617,7 @@ export default function Section(props) {
 
         break;
       case 'skills':
+        console.log('sectionData: ', sectionData)
         form = [...sectionData];
         fields = [
           {
