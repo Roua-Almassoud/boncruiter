@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import {  useLocation, useNavigate } from 'react-router-dom';
 import Navbar from '../components/navbar';
 import { FiSearch, FiMapPin } from '../assets/icons/vander';
 import Footer from '../components/footer';
@@ -11,6 +11,7 @@ import Job from '../components/common/job';
 import Multiselect from 'multiselect-react-dropdown';
 
 export default function JobList() {
+  const navigate = useNavigate();
   const { state } = useLocation();
   const initialForm = state || { title: '', location: '', skills: '' };
   const [loading, setLoading] = useState(true);
@@ -215,7 +216,7 @@ export default function JobList() {
                 <div className="row g-4">
                   {jobsList.map((item, index) => {
                     return (
-                      <div className="col-12" key={index}>
+                      <div className="col-12" key={index} onClick={() => navigate(`/jobs/${item.id}`)}>
                         <Job item={item} />
                       </div>
                     );
