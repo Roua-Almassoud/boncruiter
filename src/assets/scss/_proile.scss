@@ -144,3 +144,53 @@
     border: none;
   }
 }
+.jobs-list.details {
+  .header-details{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .ul-jobs {
+      position: relative;
+      display: flex;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+      list-style: none;
+      padding: 0;
+       li{
+         position: relative;
+         font-size: 14px;
+         line-height: 22px;
+         color: dimgray;
+         font-weight: 400;
+         padding-left: 25px;
+         margin-right: 20px;
+         margin-bottom: 3px;
+         svg{
+          position: absolute;
+          left: 0;
+          top: 0;
+          font-size: 18px;
+          line-height: 22px;
+           color: dimgray;
+           margin-left: 0 !important;
+        }
+      }
+    }
+  }
+
+}
+.job-sidebar{
+    //background: #9292921a;
+    padding: 30px;
+    background: #f5f7fc;
+    border-radius: 8px;
+    margin-bottom: 40px;
+  h4.title{
+    position: relative;
+    font-weight: 500 !important;
+    font-size: 18px !important;
+    line-height: 24px;
+    color: #202124;
+    margin-bottom: 30px;
+  }
+  }

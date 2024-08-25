@@ -14,6 +14,7 @@ import Logout from './pages/logout';
 import PrivateRoutes from './helper/privateRoutes';
 import PublicRoutes from './helper/publicRoutes';
 import JobList from './pages/jobs';
+import JobDetails from "./pages/job-details.jsx";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
           <Route path="/upload" exact element={<UploadCV />} />
           <Route path="/profile" exact element={<Profile />} />
           <Route path="/jobs" exact element={<JobList />} />
+          <Route path="/jobs/:id" exact element={<JobDetails />} />
         </Route>
       </Routes>
     </>
