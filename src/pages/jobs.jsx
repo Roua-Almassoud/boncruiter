@@ -218,9 +218,9 @@ export default function JobList() {
                       <div
                         className="col-12"
                         key={index}
-                        onClick={() => navigate(`/jobs/${item.id}`)}
+                        
                       >
-                        <Job item={item} />
+                        <Job item={item} setLoading={setLoading} getJobs={getJobs} />
                       </div>
                     );
                   })}

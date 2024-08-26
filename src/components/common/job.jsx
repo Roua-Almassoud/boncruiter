@@ -1,23 +1,38 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { FiClock, FiMapPin, FiBookmark } from "../../assets/icons/vander";
-import { useNavigate } from "react-router-dom";
-function Job({ item }) {
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { FiClock, FiMapPin, FiBookmark } from '../../assets/icons/vander';
+import { useNavigate } from 'react-router-dom';
+import Api from '../../api/Api';
+function Job({ item, setLoading, getJobs }) {
   const navigate = useNavigate();
   const currentDate = new Date();
   const postDate = new Date(item.createdAt);
   const differenceInTime = currentDate.getTime() - postDate.getTime();
   let differenceInDays = Math.round(differenceInTime / (1000 * 3600 * 24));
 
-  const jobApply = () => {
-    if (!localStorage.getItem("userId")) {
-      navigate("/login");
+  const jobApply = async () => {
+    if (!localStorage.getItem('userId')) {
+      navigate('/login');
+    } else {
+      setLoading(true);
+      const response = await Api.call(
+        { jobId: item.id },
+        `/job/apply`,
+        'post',
+        ''
+      );
+      if (response.data.code === '200') {
+        getJobs();
+      }
     }
   };
 
   return (
     <div className="job-post job-post-list rounded shadow p-4 d-md-flex align-items-center justify-content-between position-relative">
-      <div className="d-flex align-items-center w-250px">
+      <div
+        className="d-flex align-items-center w-250px"
+        onClick={() => navigate(`/jobs/${item.id}`, { state: item.isApplied })}
+      >
         {/* <img
           src={'src/assets/images/company/google-logo.png'}
           className="avatar avatar-small rounded shadow p-3 bg-white"
@@ -60,9 +75,18 @@ function Job({ item }) {
         >
           <FiBookmark className="icons" />
         </Link>*/}
-        <button className={"nav-button-border"} onClick={() => jobApply()}>
-          Apply
-        </button>
+        {item.isApplied ? (
+          <Link
+            className="nav-button-border full"
+          >
+            Applied
+          </Link>
+        ) : (
+          <button className={'nav-button-border'} onClick={() => jobApply()}>
+            Apply
+          </button>
+        )}
+
         {/*<Link
           //to={`/job-detail-one/${item.id}`}
           className="btn btn-sm nav-button-border w-full ms-md-1"
