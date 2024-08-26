@@ -1,28 +1,36 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import Navbar from '../components/navbar';
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import Navbar from "../components/navbar";
 import {
   FiMapPin,
   FiDollarSign,
   FiBriefcase,
   FiUser,
-} from '../assets/icons/vander.js';
-import Footer from '../components/footer';
-import ScrollTop from '../components/scrollTop';
-import Loader from '../components/common/loader';
-import Api from '../api/Api';
+  FiCalendar,
+} from "../assets/icons/vander.js";
+import Footer from "../components/footer";
+import ScrollTop from "../components/scrollTop";
+import Loader from "../components/common/loader";
+import Api from "../api/Api";
 
 export default function JobDetails() {
+  const navigate = useNavigate();
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const [job, setJob] = useState({});
   const [jobsList, setJobsList] = useState([]);
 
   const getJobInfo = async () => {
-    const response = await Api.call({}, `/job/${id}`, 'get', '');
-    if (response.data.code === '200') {
+    const response = await Api.call({}, `/job/${id}`, "get", "");
+    if (response.data.code === "200") {
       let jobInfo = response.data.data;
-      console.log('jobInfo: ', jobInfo);
+      const currentDate = new Date();
+      const postDate = new Date(jobInfo.createdAt);
+      const differenceInTime = currentDate.getTime() - postDate.getTime();
+
+      let differenceInDays = Math.round(differenceInTime / (1000 * 3600 * 24));
+      jobInfo.createdAt = `${differenceInDays} days ago`;
+      console.log("jobInfo: ", jobInfo);
       setJob(jobInfo);
       setLoading(false);
     } else {
@@ -34,7 +42,11 @@ export default function JobDetails() {
     getJobInfo();
   }, []);
 
-  console.log('job: ', job);
+  const jobApply = () => {
+    if (!localStorage.getItem("userId")) {
+      navigate("/login");
+    }
+  };
 
   return (
     <>
@@ -66,7 +78,12 @@ export default function JobDetails() {
                         } `}</span>
                       </li>
                     </ul>
-                    <button className={'nav-button-border'}>Apply</button>
+                    <button
+                      className={"nav-button-border"}
+                      onClick={() => jobApply()}
+                    >
+                      Apply
+                    </button>
                   </div>
                 </div>
               </div>
@@ -81,16 +98,16 @@ export default function JobDetails() {
                 <div className="job-detail">
                   <h4>Job Description</h4>
                   <p>{job?.description}</p>
-                  <h4>{'Skill & Experience'}</h4>
-                  <ul className='list-style-three'>
+                  <h4>{"Skill & Experience"}</h4>
+                  <ul className="list-style-three">
                     {job?.skills?.map((skill) => {
-                     return <li>{skill.name}</li>;
+                      return <li>{skill.name}</li>;
                     })}
                   </ul>
-                  <h4>{'Languages'}</h4>
-                  <ul className='list-style-three'>
+                  <h4>{"Languages"}</h4>
+                  <ul className="list-style-three">
                     {job?.languages?.map((language) => {
-                     return <li>{language.name}</li>;
+                      return <li>{language.name}</li>;
                     })}
                   </ul>
                 </div>
@@ -101,6 +118,11 @@ export default function JobDetails() {
                   <h4 className="title">Job Overview</h4>
                   <div className="content">
                     <ul className="job-overview">
+                      <li>
+                        <FiCalendar className="icon" />
+                        <h5>Date Posted:</h5>
+                        <span>{job?.createdAt}</span>
+                      </li>
                       <li>
                         <FiMapPin className="icon" />
                         <h5>Location:</h5>

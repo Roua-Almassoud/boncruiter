@@ -1,14 +1,20 @@
-import { curryRight } from 'lodash';
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { FiClock, FiMapPin, FiBookmark } from '../../assets/icons/vander';
-
+import React from "react";
+import { Link } from "react-router-dom";
+import { FiClock, FiMapPin, FiBookmark } from "../../assets/icons/vander";
+import { useNavigate } from "react-router-dom";
 function Job({ item }) {
+  const navigate = useNavigate();
   const currentDate = new Date();
   const postDate = new Date(item.createdAt);
   const differenceInTime = currentDate.getTime() - postDate.getTime();
-
   let differenceInDays = Math.round(differenceInTime / (1000 * 3600 * 24));
+
+  const jobApply = () => {
+    if (!localStorage.getItem("userId")) {
+      navigate("/login");
+    }
+  };
+
   return (
     <div className="job-post job-post-list rounded shadow p-4 d-md-flex align-items-center justify-content-between position-relative">
       <div className="d-flex align-items-center w-250px">
@@ -48,20 +54,25 @@ function Job({ item }) {
       </div>
 
       <div className="mt-3 mt-md-0">
-        <Link
+        {/*<Link
           to="#"
           className="btn btn-sm btn-icon btn-pills btn-soft-secondary bookmark"
         >
           <FiBookmark className="icons" />
-        </Link>
-        <Link
+        </Link>*/}
+        <button className={"nav-button-border"} onClick={() => jobApply()}>
+          Apply
+        </button>
+        {/*<Link
           //to={`/job-detail-one/${item.id}`}
           className="btn btn-sm nav-button-border w-full ms-md-1"
+          onClick={() => jobApply()}
         >
           Apply Now
-        </Link>
+        </Link>*/}
       </div>
     </div>
   );
 }
+
 export default Job;
