@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {  useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Navbar from '../components/navbar';
 import { FiSearch, FiMapPin } from '../assets/icons/vander';
 import Footer from '../components/footer';
@@ -41,14 +41,13 @@ export default function JobList() {
   };
   const getJobs = async () => {
     const skillsSelected =
-      selectedSkills.length > 0 ? selectedSkills : searchForm?.skills || '';
+      selectedSkills.length > 0 ? selectedSkills : searchForm?.skills || [];
     const title = searchForm?.title || '';
     const skills =
       skillsSelected?.map((skill) => {
         return skill.id;
       }) || '';
     const location = searchForm?.location || '';
-    console.log('skills: ', skills.join(','));
     let link = '/job?';
     if (title) link = link + 'title=' + title + '&';
     if (location) link = link + 'location=' + location + '&';
@@ -216,7 +215,11 @@ export default function JobList() {
                 <div className="row g-4">
                   {jobsList.map((item, index) => {
                     return (
-                      <div className="col-12" key={index} onClick={() => navigate(`/jobs/${item.id}`)}>
+                      <div
+                        className="col-12"
+                        key={index}
+                        onClick={() => navigate(`/jobs/${item.id}`)}
+                      >
                         <Job item={item} />
                       </div>
                     );
@@ -227,13 +230,21 @@ export default function JobList() {
                   <div className="col-12 mt-4 pt-2">
                     <nav aria-label="Page navigation">
                       <ul class="pagination justify-content-center">
-                        <li className={`page-item ${currentPage === 1 && 'disabled'}`}>
+                        <li
+                          className={`page-item ${
+                            currentPage === 1 && 'disabled'
+                          }`}
+                        >
                           <a class="page-link" href="#" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                           </a>
                         </li>
                         {renderPages()}
-                        <li className={`page-item ${currentPage === pages && 'disabled'}`}>
+                        <li
+                          className={`page-item ${
+                            currentPage === pages && 'disabled'
+                          }`}
+                        >
                           <a class="page-link" href="#" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                           </a>
