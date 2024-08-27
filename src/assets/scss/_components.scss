@@ -4,6 +4,10 @@
 /*********************************/
 /*         component-wrapper     */
 /*===============================*/
+.nav-button-border.full{
+  background: var(--primaryColor) !important;
+  color: white !important;
+}
 .nav-button-border {
   color: var(--primaryColor) !important;
   box-shadow: none !important;
@@ -61,14 +65,16 @@
     font-size: 13px;
   }
   .nav-button-border {
-    padding: 15px;
-    line-height: 24px;
     margin-left: 5px;
   }
   .job-name {
     &.title:hover {
       color: var(--primaryColor) !important;
     }
+  }
+  .nav-button-border.full{
+    background: var(--primaryColor) !important;
+    color: white !important;
   }
 }
 .component-wrapper {

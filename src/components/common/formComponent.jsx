@@ -24,7 +24,6 @@ function FormComponent({
   saveSectionForm,
   type = '',
 }) {
-  console.log('userList: ', userList);
   const [validated, setValidated] = useState(false);
   const [form, setForm] = useState(formData);
   const [errors, setErrors] = useState({});

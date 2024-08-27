@@ -361,7 +361,7 @@ export default function Section(props) {
             <div className="data">
               <p>{item.institution}</p>
               <p>{item.degree}</p>
-              <p>{`${item.fromYear} - ${item.toYear}`}</p>
+              <p>{`${item.fromYear} - ${item.toYear || 'PRESENT'}`}</p>
               <p>{item.brief}</p>
             </div>
           );
@@ -617,7 +617,6 @@ export default function Section(props) {
 
         break;
       case 'skills':
-        console.log('sectionData: ', sectionData)
         form = [...sectionData];
         fields = [
           {
