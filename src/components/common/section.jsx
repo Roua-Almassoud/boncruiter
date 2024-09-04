@@ -11,13 +11,20 @@ import Card from "react-bootstrap/Card";
 import { yearList, monthList } from "./staticData";
 
 export default function Section(props) {
-  const { section, sectionData, loading, next, availableSkills, languages } =
-    props;
-  const [alertError, setAlertError] = useState("");
+  const {
+    section,
+    sectionData,
+    loading,
+    next,
+    availableSkills,
+    languages,
+    alertError,
+    setAlertError,
+  } = props;
+
   const [formMode, setFormMode] = useState("");
   const [selectedForm, setSelectedForm] = useState({});
   const [sectionFormData, setSectionFormData] = useState(sectionData);
-  const [formToAdd, setFormToAdd] = useState(null);
   const languageFields = [
     {
       name: "language",
@@ -692,14 +699,18 @@ export default function Section(props) {
             </button>
           </div>
         )}
-        {alertError.length > 0 && (
-          <div className="alert alert-danger profile-alert" role="alert">
-            {alertError}
-          </div>
-        )}
       </>
     );
   };
 
-  return <div className="container">{renderSection()}</div>;
+  return (
+    <div className="container">
+      {renderSection()}
+      {alertError.length > 0 && (
+        <div className="alert alert-danger profile-alert" role="alert">
+          {alertError}
+        </div>
+      )}
+    </div>
+  );
 }
