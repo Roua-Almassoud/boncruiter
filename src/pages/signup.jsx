@@ -103,6 +103,7 @@ export default function Signup() {
   };
   const handleChange = (value, field) => {
     setUser({ ...user, [field]: value });
+    validate(field, value);
   };
   return (
     <>
