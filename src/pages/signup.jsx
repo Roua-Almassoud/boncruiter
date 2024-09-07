@@ -48,7 +48,7 @@ export default function Signup() {
           if (selectedCountry) {
             if (
               `+${selectedCountry.country.dialCode}` !==
-              selectedCountry.country.inputValue.trim()
+              selectedCountry.country.inputValue?.trim()
             )
               if (!isPhoneValid(value))
                 errorsList = {
@@ -80,7 +80,7 @@ export default function Signup() {
             if (selectedCountry) {
               if (
                 `+${selectedCountry.country.dialCode}` !==
-                selectedCountry.country.inputValue.trim()
+                selectedCountry.country.inputValue?.trim()
               )
                 if (!isPhoneValid(user[item]))
                   errorsList = {
