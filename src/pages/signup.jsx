@@ -35,7 +35,15 @@ export default function Signup() {
     }
   };
   const validate = (field = '', value = '', country = '') => {
-    console.log('country: ', country, 'selectedCountry: ', selectedCountry);
+    console.log(
+      'country: ',
+      country,
+      'selectedCountry: ',
+      selectedCountry,
+      'selectedCountry.country.inputValue?.trim():',
+      `+${selectedCountry.country.dialCode}` !==
+        selectedCountry.country.inputValue?.trim()
+    );
     let errorsList = errors;
     if (field) {
       console.log('in field');
@@ -49,12 +57,13 @@ export default function Signup() {
             if (
               `+${selectedCountry.country.dialCode}` !==
               selectedCountry.country.inputValue?.trim()
-            )
+            ) {
               if (!isPhoneValid(value))
                 errorsList = {
                   ...errorsList,
                   phone: 'Invalid Phone Number!',
                 };
+            }
           }
         } else {
           delete errorsList[field];
