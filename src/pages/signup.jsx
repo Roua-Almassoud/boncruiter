@@ -26,6 +26,7 @@ export default function Signup() {
   });
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
+  const [selectedCountry, setCountry] = useState({});
   const isPhoneValid = (phone) => {
     try {
       return phoneUtil.isValidNumber(phoneUtil.parseAndKeepRawInput(phone));
@@ -33,7 +34,8 @@ export default function Signup() {
       return false;
     }
   };
-  const validate = (field = '', value = '') => {
+  const validate = (field = '', value = '', country = '') => {
+    
     let errorsList = errors;
     if (field) {
       if (value) {
@@ -42,11 +44,17 @@ export default function Signup() {
           //   errorsList = { ...errorsList, phone: 'Invalid Phone Number!' };
           //if (!Utils.regexCheck(user[field], 'phone'))
 
-          if (!isPhoneValid(value))
-            errorsList = {
-              ...errorsList,
-              phone: 'Invalid Phone Number!',
-            };
+          if (selectedCountry) {
+            if (
+              `+${selectedCountry.country.dialCode}` !==
+              selectedCountry.country.inputValue
+            )
+              if (!isPhoneValid(value))
+                errorsList = {
+                  ...errorsList,
+                  phone: 'Invalid Phone Number!',
+                };
+          }
         } else {
           delete errorsList[field];
         }
@@ -67,12 +75,17 @@ export default function Signup() {
         } else {
           errorsList = { ...errorsList };
           if (item === 'phone' && !Utils.isEmpty(user[item])) {
-            if (!isPhoneValid(user[item]))
-              errorsList = {
-                ...errorsList,
-                phone: 'Invalid Phone Number!',
-              };
-            else delete errorsList[field];
+            if (selectedCountry) {
+              if (
+                `+${selectedCountry.country.dialCode}` !==
+                selectedCountry.country.inputValue
+              )
+                if (!isPhoneValid(user[item]))
+                  errorsList = {
+                    ...errorsList,
+                    phone: 'Invalid Phone Number!',
+                  };
+            } else delete errorsList[field];
           }
         }
       });
@@ -101,9 +114,10 @@ export default function Signup() {
       setAlertError('');
     }
   };
-  const handleChange = (value, field) => {
+  const handleChange = (value, field, country = '') => {
     setUser({ ...user, [field]: value });
-    validate(field, value);
+    setCountry(country);
+    validate(field, value, country);
   };
   return (
     <>
@@ -194,12 +208,11 @@ export default function Signup() {
                     </label>
                     <PhoneInput
                       className="number"
-                      country={'us'}
                       value={user?.phone}
-                      // onChange={(value, country, event, formattedValue) =>
-                      //   handleChange(formattedValue, 'phone')
-                      // }
-                      onChange={(value) => handleChange(value, 'phone')}
+                      onChange={(value, country, event, formattedValue) =>
+                        handleChange(value, 'phone', country)
+                      }
+                      //onChange={(value) => handleChange(value, 'phone')}
                     />
                     <div className={errors.phone ? 'invalid-feedback' : ''}>
                       {errors.phone}
