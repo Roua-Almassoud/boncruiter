@@ -65,11 +65,11 @@ export default function Footer({top}){
                     <div className="row align-items-center">
                         <div className="col-sm-6">
                             <div className="text-sm-start">
-                                <p className="mb-0 fw-medium">© {new Date().getFullYear()} Jobnova. Design with <i className="mdi mdi-heart text-danger"></i> by <Link to="https://shreethemes.in/" target="_blank" className="text-reset">Shreethemes</Link>.</p>
+                                <p className="mb-0 fw-medium">© {new Date().getFullYear()} BonZuttner</p>
                             </div>
                         </div>
 
-                        <div className="col-sm-6 mt-4 mt-sm-0 pt-2 pt-sm-0">
+                        {/* <div className="col-sm-6 mt-4 mt-sm-0 pt-2 pt-sm-0">
                             <ul className="list-unstyled social-icon foot-social-icon text-sm-end mb-0">
                                 <li className="list-inline-item"><Link to="https://1.envato.market/jobnova-react" target="_blank" className="rounded"><FiShoppingCart className="fea icon-sm align-middle"/></Link></li>
                                 <li className="list-inline-item"><Link to="https://dribbble.com/shreethemes" target="_blank" className="rounded"><FiDribbble className="fea icon-sm align-middle"/></Link></li>
@@ -78,7 +78,7 @@ export default function Footer({top}){
                                 <li className="list-inline-item"><Link to="https://www.instagram.com/shreethemes/" target="_blank" className="rounded"><FiInstagram className="fea icon-sm align-middle"/></Link></li>
                                 <li className="list-inline-item"><Link to="https://twitter.com/shreethemes" target="_blank" className="rounded"><FiTwitter className="fea icon-sm align-middle"/></Link></li>
                             </ul>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>
