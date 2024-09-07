@@ -41,8 +41,8 @@ export default function Signup() {
       'selectedCountry: ',
       selectedCountry,
       'selectedCountry.country.inputValue?.trim():',
-      `+${selectedCountry.country.dialCode}` !==
-        selectedCountry.country.inputValue?.trim()
+      `+${selectedCountry?.country?.dialCode}` !==
+        selectedCountry?.country?.inputValue?.trim()
     );
     let errorsList = errors;
     if (field) {
