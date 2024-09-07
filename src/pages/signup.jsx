@@ -35,9 +35,10 @@ export default function Signup() {
     }
   };
   const validate = (field = '', value = '', country = '') => {
-    
+    console.log('country: ', country, 'selectedCountry: ', selectedCountry);
     let errorsList = errors;
     if (field) {
+      console.log('in field');
       if (value) {
         if (field === 'phone' && !Utils.isEmpty(user[field])) {
           // if (!Utils.validatePhoneNumber(user[field]))
@@ -62,6 +63,7 @@ export default function Signup() {
       } else if (field !== 'phone')
         errorsList = { ...errorsList, [field]: 'Field is Required!' };
     } else {
+      console.log('in else');
       Object.keys(user).map((item) => {
         if (item !== 'phone' && item !== 'image') {
           if (!user[item]) {
