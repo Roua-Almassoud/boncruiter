@@ -40,6 +40,10 @@ export default function Signup() {
       country,
       'selectedCountry: ',
       selectedCountry,
+      'dial: ',
+      `+${selectedCountry?.country?.dialCode}`,
+      'input: ',
+      selectedCountry?.country?.inputValue?.trim(),
       'selectedCountry.country.inputValue?.trim():',
       `+${selectedCountry?.country?.dialCode}` !==
         selectedCountry?.country?.inputValue?.trim()
