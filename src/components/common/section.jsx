@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-import FormComponent from "./formComponent";
-import Api from "../../api/Api";
-import Loader from "./loader";
-import Utils from "../utils/utils";
-import { FiPlusCircle, LuPen, FiTrash } from "../../assets/icons/vander";
-import ListGroup from "react-bootstrap/ListGroup";
-import Card from "react-bootstrap/Card";
-import { yearList, monthList } from "./staticData";
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import FormComponent from './formComponent';
+import Api from '../../api/Api';
+import Loader from './loader';
+import Utils from '../utils/utils';
+import { FiPlusCircle, LuPen, FiTrash } from '../../assets/icons/vander';
+import ListGroup from 'react-bootstrap/ListGroup';
+import Card from 'react-bootstrap/Card';
+import { yearList, monthList } from './staticData';
 
 export default function Section(props) {
   const {
@@ -22,146 +22,168 @@ export default function Section(props) {
     setAlertError,
   } = props;
 
-  const [formMode, setFormMode] = useState("");
+  const [formMode, setFormMode] = useState('');
   const [selectedForm, setSelectedForm] = useState({});
   const [sectionFormData, setSectionFormData] = useState(sectionData);
   const languageFields = [
     {
-      name: "language",
-      type: "list",
+      name: 'language',
+      type: 'list',
       optional: false,
-      label: "Languages",
+      label: 'Languages',
       options: languages,
     },
     {
-      name: "level",
-      type: "list",
+      name: 'level',
+      type: 'list',
       optional: false,
-      label: "Levels",
+      label: 'Levels',
       options: [
         {
-          id: "none",
-          name: "None",
+          id: 'none',
+          name: 'None',
         },
         {
-          id: "elementary",
-          name: "Elementary",
+          id: 'elementary',
+          name: 'Elementary',
         },
         {
-          id: "limited",
-          name: "Limited",
+          id: 'limited',
+          name: 'Limited',
         },
         {
-          id: "professional",
-          name: "Professional",
+          id: 'professional',
+          name: 'Professional',
         },
         {
-          id: "bilingual",
-          name: "Bilingual",
+          id: 'bilingual',
+          name: 'Bilingual',
         },
         {
-          id: "native",
-          name: "Native",
+          id: 'native',
+          name: 'Native',
         },
       ],
     },
   ];
   const educationFields = [
     {
-      name: "degree",
-      type: "text",
+      name: 'degree',
+      type: 'text',
       optional: false,
-      label: "Degree",
+      label: 'Degree',
     },
     {
-      name: "institution",
-      type: "text",
+      name: 'institution',
+      type: 'text',
       optional: false,
-      label: "Institution",
+      label: 'Institution',
     },
     {
-      name: "brief",
-      type: "text",
+      name: 'brief',
+      type: 'text',
       optional: false,
-      label: "Brief",
+      label: 'Brief',
     },
     {
-      name: "fromYear",
-      type: "staticList",
+      name: 'fromYear',
+      type: 'staticList',
       optional: false,
-      label: "From Year",
-      firstItem: "Year",
+      label: 'From Year',
+      firstItem: 'Year',
       options: yearList,
     },
     {
-      name: "toYear",
-      type: "staticList",
+      name: 'toYear',
+      type: 'staticList',
       optional: false,
-      label: "To Year",
-      firstItem: "Year",
+      label: 'To Year',
+      firstItem: 'Year',
       options: yearList,
     },
   ];
   const certificateFields = [
     {
-      name: "title",
-      type: "text",
+      name: 'title',
+      type: 'text',
       optional: false,
-      label: "Title",
+      label: 'Title',
     },
     {
-      name: "link",
-      type: "text",
+      name: 'link',
+      type: 'text',
       optional: false,
-      label: "Link",
-      regex: "uri",
+      label: 'Link',
+      regex: 'uri',
     },
     {
-      name: "institution",
-      type: "text",
+      name: 'institution',
+      type: 'text',
       optional: false,
-      label: "Institution",
+      label: 'Institution',
     },
     {
-      name: "brief",
-      type: "text",
+      name: 'brief',
+      type: 'text',
       optional: false,
-      label: "Brief",
+      label: 'Brief',
     },
     {
-      name: "year",
-      type: "staticList",
+      name: 'year',
+      type: 'staticList',
       optional: false,
-      label: "Year",
-      firstItem: "Year",
+      label: 'Year',
+      firstItem: 'Year',
       options: yearList,
+    },
+  ];
+
+  const projjectFields = [
+    {
+      name: 'name',
+      type: 'text',
+      optional: false,
+      label: 'Name',
+    },
+    {
+      name: 'link',
+      type: 'text',
+      optional: false,
+      label: 'Link',
+      regex: 'uri',
+    },
+    {
+      name: 'brief',
+      type: 'text',
+      optional: false,
+      label: 'Brief',
     },
   ];
 
   const experienceFields = [
     {
-      name: "title",
-      type: "text",
+      name: 'title',
+      type: 'text',
       optional: false,
-      label: "Title",
+      label: 'Title',
     },
     {
-      name: "company",
-      type: "text",
+      name: 'company',
+      type: 'text',
       optional: false,
-      label: "Company",
+      label: 'Company',
     },
     {
-      name: "summary",
-      type: "text",
+      name: 'summary',
+      type: 'text',
       optional: false,
-      label: "Summary",
+      label: 'Summary',
     },
     {
-      name: "location",
-      type: "text",
+      name: 'location',
+      type: 'text',
       optional: false,
-      label: "Location",
+      label: 'Location',
     },
     // {
     //   name: 'remote',
@@ -176,47 +198,47 @@ export default function Section(props) {
     //   label: 'Full-time',
     // },
     {
-      name: "startMonth",
-      type: "staticList",
+      name: 'startMonth',
+      type: 'staticList',
       optional: false,
-      label: "Start Month",
-      firstItem: "Month",
+      label: 'Start Month',
+      firstItem: 'Month',
       options: monthList,
     },
     {
-      name: "startYear",
-      type: "staticList",
+      name: 'startYear',
+      type: 'staticList',
       optional: false,
-      label: "Start Year",
-      firstItem: "Year",
+      label: 'Start Year',
+      firstItem: 'Year',
       options: yearList,
     },
     {
-      name: "endMonth",
-      type: "staticList",
+      name: 'endMonth',
+      type: 'staticList',
       optional: false,
-      label: "End Month",
-      firstItem: "Month",
+      label: 'End Month',
+      firstItem: 'Month',
       options: monthList,
     },
     {
-      name: "endYear",
-      type: "staticList",
+      name: 'endYear',
+      type: 'staticList',
       optional: false,
-      label: "End Year",
-      firstItem: "Year",
+      label: 'End Year',
+      firstItem: 'Year',
       options: yearList,
     },
   ];
   const saveSection = async (data, selectedList) => {
     loading(true);
     let listData = [];
-    if (section === "skills") {
+    if (section === 'skills') {
       selectedList.map((item) => {
         listData.push({ skillId: item.id });
       });
     }
-    if (section === "languages") {
+    if (section === 'languages') {
       data.map((item) => {
         listData.push({
           languageId: item.id,
@@ -224,7 +246,7 @@ export default function Section(props) {
         });
       });
     }
-    if (section === "education") {
+    if (section === 'education') {
       data.map((item) => {
         listData.push({
           degree: item.degree,
@@ -235,7 +257,7 @@ export default function Section(props) {
         });
       });
     }
-    if (section === "certificates") {
+    if (section === 'certificates') {
       data.map((item) => {
         listData.push({
           title: item.title,
@@ -246,7 +268,16 @@ export default function Section(props) {
         });
       });
     }
-    if (section === "experiences") {
+    if (section === 'projects') {
+      data.map((item) => {
+        listData.push({
+          name: item.name,
+          link: item.link,
+          brief: item.brief,
+        });
+      });
+    }
+    if (section === 'experiences') {
       data.map((item) => {
         listData.push({
           title: item.title,
@@ -264,51 +295,53 @@ export default function Section(props) {
     }
 
     let requestBody =
-      section !== "basicInfo"
+      section !== 'basicInfo'
         ? {
             [section]: listData,
           }
         : data;
     let requestPath =
-      section === "basicInfo"
-        ? "basic-info"
-        : section === "skills"
-        ? "skill/bulk"
-        : section === "languages"
-        ? "language/bulk"
-        : section === "education"
-        ? "education/bulk"
-        : section === "certificates"
-        ? "certificate/bulk"
-        : section === "experiences"
-        ? "experience/bulk"
+      section === 'basicInfo'
+        ? 'basic-info'
+        : section === 'skills'
+        ? 'skill/bulk'
+        : section === 'languages'
+        ? 'language/bulk'
+        : section === 'education'
+        ? 'education/bulk'
+        : section === 'certificates'
+        ? 'certificate/bulk'
+        : section === 'projects'
+        ? 'projects/bulk'
+        : section === 'experiences'
+        ? 'experience/bulk'
         : section;
     const response = await Api.call(
       requestBody,
       `/user/${requestPath}`,
-      `${section !== "basicInfo" ? "put" : "post"}`,
-      "",
+      `${section !== 'basicInfo' ? 'put' : 'post'}`,
+      ''
     );
-    if (response.data.code === "200") {
+    if (response.data.code === '200') {
       loading(false);
-      setAlertError("");
-      if (section !== "experiences") next();
+      setAlertError('');
+      if (section !== 'experiences') next();
     } else {
       const errorMsg = response.data
         ? response.data[0]
-          ? response.data[0].field + " " + response.data[0].message
-          : "Something went wrong, please try again!"
-        : "Something went wrong, please try again!";
+          ? response.data[0].field + ' ' + response.data[0].message
+          : 'Something went wrong, please try again!'
+        : 'Something went wrong, please try again!';
       setAlertError(errorMsg);
       loading(false);
     }
   };
 
   const saveSectionForm = (data) => {
-    if (formMode === "new") {
+    if (formMode === 'new') {
       sectionFormData.push(data);
       setSectionFormData(sectionFormData);
-      setFormMode("");
+      setFormMode('');
       renderSection();
     } else {
       let updatedData = sectionFormData?.map((item) => {
@@ -317,7 +350,7 @@ export default function Section(props) {
         } else return item;
       });
       let selectedObject = updatedData.find(
-        (a) => a.tempId === selectedForm.tempId,
+        (a) => a.tempId === selectedForm.tempId
       );
 
       selectedObject = { ...data };
@@ -325,15 +358,22 @@ export default function Section(props) {
       setSectionFormData(updatedData);
     }
   };
+
+  const removeForm = (selectedItem) => {
+    let filteredList = sectionFormData.filter(
+      (item) => item.tempId !== selectedItem.tempId
+    );
+    setSectionFormData(filteredList);
+  };
   const editForm = (selectedItem) => {
     setSelectedForm(selectedItem);
-    setFormMode("edit");
+    setFormMode('edit');
   };
   const renderItem = (item) => {
     let itemData;
     switch (section) {
-      case "languages":
-        if (formMode === "edit" && item.id === selectedForm.id) {
+      case 'languages':
+        if (formMode === 'edit' && item.id === selectedForm.id) {
           itemData = (
             <FormComponent
               fields={languageFields}
@@ -354,8 +394,8 @@ export default function Section(props) {
         }
         break;
 
-      case "education":
-        if (formMode === "edit" && item.id === selectedForm.id) {
+      case 'education':
+        if (formMode === 'edit' && item.id === selectedForm.id) {
           itemData = (
             <FormComponent
               fields={educationFields}
@@ -371,15 +411,15 @@ export default function Section(props) {
             <div className="data">
               <p>{item.institution}</p>
               <p>{item.degree}</p>
-              <p>{`${item.fromYear} - ${item.toYear || "PRESENT"}`}</p>
+              <p>{`${item.fromYear} - ${item.toYear || 'PRESENT'}`}</p>
               <p>{item.brief}</p>
             </div>
           );
         }
         break;
 
-      case "certificates":
-        if (formMode === "edit" && item.id === selectedForm.id) {
+      case 'certificates':
+        if (formMode === 'edit' && item.id === selectedForm.id) {
           itemData = (
             <FormComponent
               fields={certificateFields}
@@ -403,8 +443,31 @@ export default function Section(props) {
         }
         break;
 
-      case "experiences":
-        if (formMode === "edit" && item.id === selectedForm.id) {
+      case 'projects':
+        if (formMode === 'edit' && item.tempId === selectedForm.tempId) {
+          itemData = (
+            <FormComponent
+              fields={projjectFields}
+              formData={selectedForm}
+              saveSection={saveSection}
+              next={null}
+              userList={null}
+              saveSectionForm={saveSectionForm}
+            />
+          );
+        } else {
+          itemData = (
+            <div className="data">
+              <p>{item.name}</p>
+              <p>{item.link}</p>
+              <p>{item.brief}</p>
+            </div>
+          );
+        }
+        break;
+
+      case 'experiences':
+        if (formMode === 'edit' && item.id === selectedForm.id) {
           itemData = (
             <FormComponent
               fields={experienceFields}
@@ -420,7 +483,7 @@ export default function Section(props) {
             <div className="data">
               <p>{item.title}</p>
               <p>{`${item.company} - ${
-                item.fullTime ? "Full-time" : "Part-time"
+                item.fullTime ? 'Full-time' : 'Part-time'
               }`}</p>
               <p>{`(${item.startMonth} / ${item.startYear}) - (${item.endMonth} / ${item.endYear})`}</p>
             </div>
@@ -432,7 +495,7 @@ export default function Section(props) {
   };
 
   const addForm = () => {
-    setFormMode("new");
+    setFormMode('new');
   };
 
   const renderListMode = () => {
@@ -446,10 +509,13 @@ export default function Section(props) {
 
               <div className="col-2 action-section">
                 <LuPen className="fea icon" onClick={() => editForm(item)} />
-                <FiTrash className="fea icon" />
+                <FiTrash
+                  className="fea icon"
+                  onClick={() => removeForm(item)}
+                />
               </div>
             </div>
-          </ListGroup.Item>,
+          </ListGroup.Item>
         );
       });
 
@@ -458,54 +524,62 @@ export default function Section(props) {
 
   const renderForm = () => {
     let fields =
-      section === "languages"
+      section === 'languages'
         ? languageFields
-        : section === "education"
+        : section === 'education'
         ? educationFields
-        : section === "certificates"
+        : section === 'certificates'
         ? certificateFields
-        : section === "experiences"
+        : section === 'projects'
+        ? projjectFields
+        : section === 'experiences'
         ? experienceFields
         : [];
     let formFields =
-      section === "languages"
+      section === 'languages'
         ? {
-            id: "",
-            name: "",
+            id: '',
+            name: '',
             level: {
-              id: "none",
-              name: "None",
+              id: 'none',
+              name: 'None',
             },
             tempId: Utils.unique(),
           }
-        : section === "education"
+        : section === 'education'
         ? {
-            degree: "",
-            institution: "",
-            brief: "",
+            degree: '',
+            institution: '',
+            brief: '',
             fromYear: 0,
             toYear: 0,
           }
-        : section === "certificates"
+        : section === 'certificates'
         ? {
-            title: "",
-            link: "",
-            institution: "",
-            brief: "",
+            title: '',
+            link: '',
+            institution: '',
+            brief: '',
             year: 0,
           }
-        : section === "experiences"
+        : section === 'projects'
         ? {
-            title: "",
-            company: "",
-            summary: "",
-            location: "",
+            name: '',
+            link: '',
+            brief: '',
+          }
+        : section === 'experiences'
+        ? {
+            title: '',
+            company: '',
+            summary: '',
+            location: '',
             remote: false,
             fullTime: false,
-            startMonth: "",
-            startYear: "",
-            endMonth: "",
-            endYear: "",
+            startMonth: '',
+            startYear: '',
+            endMonth: '',
+            endYear: '',
           }
         : {};
     let addedForm = (
@@ -518,7 +592,7 @@ export default function Section(props) {
             next={null}
             userList={null}
             saveSectionForm={saveSectionForm}
-            type={"new"}
+            type={'new'}
           />
         </Card.Body>
       </Card>
@@ -531,7 +605,7 @@ export default function Section(props) {
     let form;
     let extraAction;
     switch (section) {
-      case "basicInfo":
+      case 'basicInfo':
         form = {
           ...sectionData,
           brief: sectionData?.brief,
@@ -546,28 +620,28 @@ export default function Section(props) {
         };
         fields = [
           {
-            name: "email",
-            type: "text",
+            name: 'email',
+            type: 'text',
             optional: false,
-            label: "Email",
+            label: 'Email',
           },
           {
-            name: "firstName",
-            type: "text",
+            name: 'firstName',
+            type: 'text',
             optional: false,
-            label: "First Name",
+            label: 'First Name',
           },
           {
-            name: "lastName",
-            type: "text",
+            name: 'lastName',
+            type: 'text',
             optional: false,
-            label: "Last Name",
+            label: 'Last Name',
           },
           {
-            name: "birthDate",
-            type: "date",
+            name: 'birthDate',
+            type: 'date',
             optional: false,
-            label: "Birth Date",
+            label: 'Birth Date',
           },
           // {
           //   name: 'phoneNumber',
@@ -577,82 +651,83 @@ export default function Section(props) {
           //   regex: 'phone',
           // },
           {
-            name: "brief",
-            type: "text",
+            name: 'brief',
+            type: 'text',
             optional: false,
-            label: "Brief",
+            label: 'Brief',
           },
 
           {
-            name: "github",
-            type: "text",
+            name: 'github',
+            type: 'text',
             optional: true,
-            label: "Github Main Page Url",
-            regex: "uri",
+            label: 'Github Main Page Url',
+            regex: 'uri',
           },
 
           {
-            name: "linkedinUrl",
-            type: "text",
+            name: 'linkedinUrl',
+            type: 'text',
             optional: false,
-            label: "Linkedin Url",
-            regex: "uri",
+            label: 'Linkedin Url',
+            regex: 'uri',
           },
           {
-            name: "location",
-            type: "text",
+            name: 'location',
+            type: 'text',
             optional: false,
-            label: "Location",
+            label: 'Location',
           },
           {
-            name: "portfolioUrl",
-            type: "text",
+            name: 'portfolioUrl',
+            type: 'text',
             optional: true,
-            label: "Portfolio Website Url",
-            regex: "uri",
+            label: 'Portfolio Website Url',
+            regex: 'uri',
           },
           {
-            name: "noticePeriod",
-            type: "number",
+            name: 'noticePeriod',
+            type: 'number',
             optional: false,
-            label: "Notice Period",
+            label: 'Notice Period',
           },
           {
-            name: "desiredSalary",
-            type: "number",
+            name: 'desiredSalary',
+            type: 'number',
             optional: false,
-            label: "Desired Salary",
+            label: 'Desired Salary',
           },
         ];
 
         break;
-      case "skills":
+      case 'skills':
         form = [...sectionData];
         fields = [
           {
-            name: "skills",
-            type: "multiSelect",
+            name: 'skills',
+            type: 'multiSelect',
             optional: false,
-            label: "Skills",
+            label: 'Skills',
             options: availableSkills,
           },
         ];
         if (alertError) {
-          setAlertError("");
+          setAlertError('');
         }
         break;
-      case "languages":
+      case 'languages':
         extraAction = <i class="bi bi-plus"></i>;
         break;
-      case "education":
+      case 'education':
         extraAction = <i class="bi bi-plus"></i>;
         break;
-      case "certificates":
+      case 'certificates':
         extraAction = <i class="bi bi-plus"></i>;
         break;
-      case "projects":
+      case 'projects':
+        extraAction = <i class="bi bi-plus"></i>;
         break;
-      case "experiences":
+      case 'experiences':
         extraAction = <i class="bi bi-plus"></i>;
         break;
     }
@@ -668,8 +743,8 @@ export default function Section(props) {
           </div>
         )}
 
-        {formMode === "new" && renderForm()}
-        {section !== "basicInfo" && section !== "skills" ? (
+        {formMode === 'new' && renderForm()}
+        {section !== 'basicInfo' && section !== 'skills' ? (
           renderListMode()
         ) : (
           <FormComponent
@@ -677,10 +752,10 @@ export default function Section(props) {
             formData={form}
             saveSection={saveSection}
             next={next}
-            userList={section === "skills" ? sectionData : null}
+            userList={section === 'skills' ? sectionData : null}
           />
         )}
-        {section !== "basicInfo" && section !== "skills" && (
+        {section !== 'basicInfo' && section !== 'skills' && (
           <div className="form-action">
             <button
               className={`nav-button`}
@@ -690,7 +765,7 @@ export default function Section(props) {
             </button>
 
             <button
-              className={"nav-button-border"}
+              className={'nav-button-border'}
               onClick={(e) => {
                 next();
               }}
