@@ -131,6 +131,7 @@ export default function Settings() {
       if (response.data.code === '200') {
         setLoading(false);
         setAlertSuccess('Updated Successfully!');
+        setAlertError('');
       } else {
         const errorMsg = response?.data?.message;
         setAlertError(errorMsg);
@@ -353,14 +354,14 @@ export default function Settings() {
                         {alertError}
                       </div>
                     )}
-                    {alertSuccess.length > 0 && (
+                    {/* {alertSuccess.length > 0 && (
                       <div
                         class="alert alert-success profile-alert"
                         role="alert"
                       >
                         {alertSuccess}
                       </div>
-                    )}
+                    )} */}
                   </form>
                 ))}
             </div>
