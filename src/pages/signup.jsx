@@ -35,24 +35,8 @@ export default function Signup() {
     }
   };
   const validate = (field = '', value = '', country = '') => {
-    console.log(
-      'country: ',
-      country,
-      'selectedCountry: ',
-      selectedCountry,
-      'dial: ',
-      `+${selectedCountry?.country?.dialCode}`,
-      'input with trim: ',
-      selectedCountry?.country?.inputValue?.trim(),
-      'input with trim: ',
-      selectedCountry?.country?.inputValue,
-      'selectedCountry.country.inputValue?.trim():',
-      `+${selectedCountry?.country?.dialCode}` !==
-        selectedCountry?.country?.inputValue?.trim()
-    );
     let errorsList = errors;
     if (field) {
-      console.log('in field');
       if (value) {
         if (field === 'phone' && !Utils.isEmpty(user[field])) {
           // if (!Utils.validatePhoneNumber(user[field]))
@@ -78,7 +62,6 @@ export default function Signup() {
       } else if (field !== 'phone')
         errorsList = { ...errorsList, [field]: 'Field is Required!' };
     } else {
-      console.log('in else');
       Object.keys(user).map((item) => {
         if (item !== 'phone' && item !== 'image') {
           if (!user[item]) {

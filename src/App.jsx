@@ -14,7 +14,8 @@ import Logout from './pages/logout';
 import PrivateRoutes from './helper/privateRoutes';
 import PublicRoutes from './helper/publicRoutes';
 import JobList from './pages/jobs';
-import JobDetails from "./pages/job-details.jsx";
+import JobDetails from './pages/job-details.jsx';
+import Settings from './pages/settings';
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
           <Route path="/profile" exact element={<Profile />} />
           <Route path="/jobs" exact element={<JobList />} />
           <Route path="/jobs/:id" exact element={<JobDetails />} />
+          <Route path="/setting" exact element={<Settings />} />
         </Route>
       </Routes>
     </>

@@ -82,7 +82,8 @@
   }
 }
 
-.alert-danger.profile-alert {
+.alert-danger.profile-alert,
+.alert-success.profile-alert {
   width: auto;
   max-width: none !important;
   margin-top: 20px;

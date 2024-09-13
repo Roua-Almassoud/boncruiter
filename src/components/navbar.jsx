@@ -175,13 +175,13 @@ export default function Navbar({ navClass, navLight }) {
                         <FiUser className="fea icon-sm me-2 align-middle" />
                         Profile
                       </Link>
-                      {/* <Link
-                        to="candidate-profile-setting"
+                      <Link
+                        to="/setting"
                         className="dropdown-item fw-medium fs-6"
                       >
                         <FiSettings className="fea icon-sm me-2 align-middle" />
                         Settings
-                      </Link> */}
+                      </Link>
                       <div className="dropdown-divider border-top"></div>
 
                       <Link
